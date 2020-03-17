@@ -58,6 +58,11 @@ import org.springframework.util.StringValueResolver;
  * @see org.springframework.context.ApplicationContextAware
  * @see org.springframework.context.support.AbstractApplicationContext#refresh()
  */
+
+/**
+ * 这个类相当复杂,
+ * 要从他的父接口BeanPostProcessor说起,看完父接口之后再来看
+ */
 class ApplicationContextAwareProcessor implements BeanPostProcessor {
 
 	private final ConfigurableApplicationContext applicationContext;
@@ -116,8 +121,12 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 			if (bean instanceof MessageSourceAware) {
 				((MessageSourceAware) bean).setMessageSource(this.applicationContext);
 			}
+
+			// spring帮你set一个applicationContext对象
+			// 所以当我们自己的一个对象实现了ApplicationContextAware对象只需要提供setter就能得到application
 			if (bean instanceof ApplicationContextAware) {
-				((ApplicationContextAware) bean).setApplicationContext(this.applicationContext);
+//				if (!bean.getClass().getSimpleName().equals("SnakeDao"))
+					((ApplicationContextAware) bean).setApplicationContext(this.applicationContext);
 			}
 		}
 	}

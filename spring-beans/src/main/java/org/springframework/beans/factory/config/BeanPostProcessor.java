@@ -20,6 +20,30 @@ import org.springframework.beans.BeansException;
 import org.springframework.lang.Nullable;
 
 /**
+ * BeanPostProcessor是Spring框架通过的一个扩展类点(不止一个)
+ * 通过实现BeanPostProcessor接口,程序员就可以插手bean实例化的过程,从而减轻了beanFactory的负担
+ * 值得说明的是这个接口可以设置多个,会形成一个列表,然后依次执行
+ * 比如AOP就是在bea实例后 期间将切面逻辑织入bean实例中的
+ * AOP也正是通过BeanPostProcessor和IOC容器建立起来了联系
+ * (由spring提供的默认的PostProcessor,spring提供了很多默认的PostProcessor)
+ * BeanPostProcessor 的使用方式(动态代理和IOC,aop结合起来使用)
+ * 接口本身特别简单,简单到你发指.
+ * 但是他的实现类特别复杂,同样复杂到你发指;
+ * 可以看看spring通过哪些默认的实现
+ * 1. ApplicationContextAwareProcessor (acap)
+ * 	acap后置处理器的作用是, 当应用程序定义的Bean实现ApplicationContextAware接口时注入ApplicationContext对象
+ * 	当然这是他的一个作用,他还有其他作用...
+ * 2.
+ * 3.
+ * 4.
+ * 5.
+ * 6.
+ * 7.
+ * 8.
+ *
+ */
+
+/**
  * Factory hook that allows for custom modification of new bean instances,
  * e.g. checking for marker interfaces or wrapping them with proxies.
  *
@@ -40,8 +64,14 @@ import org.springframework.lang.Nullable;
  * @see ConfigurableBeanFactory#addBeanPostProcessor
  * @see BeanFactoryPostProcessor
  */
+/**
+ * spring bean 后置器
+ */
 public interface BeanPostProcessor {
 
+	/**
+	 * 在bean初始化之前执行
+	 */
 	/**
 	 * Apply this BeanPostProcessor to the given new bean instance <i>before</i> any bean
 	 * initialization callbacks (like InitializingBean's {@code afterPropertiesSet}
@@ -60,6 +90,9 @@ public interface BeanPostProcessor {
 		return bean;
 	}
 
+	/**
+	 * 在bean初始化之后执行
+	 */
 	/**
 	 * Apply this BeanPostProcessor to the given new bean instance <i>after</i> any bean
 	 * initialization callbacks (like InitializingBean's {@code afterPropertiesSet}
