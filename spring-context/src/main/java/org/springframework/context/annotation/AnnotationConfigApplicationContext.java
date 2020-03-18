@@ -58,6 +58,10 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 
 
 	/**
+	 * 初始化一个bean的读取和扫描器
+	 *
+	 */
+	/**
 	 * Create a new AnnotationConfigApplicationContext that needs to be populated
 	 * through {@link #register} calls and then manually {@linkplain #refresh refreshed}.
 	 */
@@ -77,12 +81,18 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	}
 
 	/**
+	 * 这个构造方法需要传入一个呗javaconfig注解了的配置类
+	 * 然后会把这个被注解了javaconfig的类通过注解读取器后继而解析
+	 */
+	/**
 	 * Create a new AnnotationConfigApplicationContext, deriving bean definitions
 	 * from the given annotated classes and automatically refreshing the context.
 	 * @param annotatedClasses one or more annotated classes,
 	 * e.g. {@link Configuration @Configuration} classes
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... annotatedClasses) {
+		// 这个是由于他有父类,故而会先调用父类的构造方法,然后才会调用自己的构造方法
+		// 在自己构造方法中初始一个读取器和扫描器
 		this();
 		register(annotatedClasses);
 		refresh();
