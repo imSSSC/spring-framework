@@ -52,13 +52,27 @@ import org.springframework.util.Assert;
  */
 public class AnnotationConfigApplicationContext extends GenericApplicationContext implements AnnotationConfigRegistry {
 
+	/**
+	 * 这个类顾名思义是一个reader,一个读取器
+	 * 读取一个被加了注解的bean
+	 * 这个类在构造方法中实例化的
+	 */
 	private final AnnotatedBeanDefinitionReader reader;
 
+	/**
+	 * 这个是一个扫描器,扫描所有加了注解的bean
+	 * 同样是在构造方法中被实例化的
+	 */
 	private final ClassPathBeanDefinitionScanner scanner;
 
 
 	/**
 	 * 初始化一个bean的读取和扫描器
+	 * 何为读取器和扫描器参考上面的属性注释
+	 * 默认构造函数,如果直接调用这个默认构造方法,需要在稍后通过调用其register()
+	 * 去注册配置类(javaConfig),并电泳refresh()方法刷新容器.
+	 * 触发容器堆注解bean的载入,解析和注册过程
+	 * 这种使用过程,和@porfile一样
 	 *
 	 */
 	/**
@@ -66,7 +80,14 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * through {@link #register} calls and then manually {@linkplain #refresh refreshed}.
 	 */
 	public AnnotationConfigApplicationContext() {
+		/**
+		 * 父类的构造方法
+		 * 创建一个读取注解的Bean定义读取器
+		 * 什么是bean定义? BeanDefinition
+		 */
 		this.reader = new AnnotatedBeanDefinitionReader(this);
+
+
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 
@@ -81,8 +102,8 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	}
 
 	/**
-	 * 这个构造方法需要传入一个呗javaconfig注解了的配置类
-	 * 然后会把这个被注解了javaconfig的类通过注解读取器后继而解析
+	 * 这个构造方法需要传入一个呗javaConfig注解了的配置类
+	 * 然后会把这个被注解了javaConfig的类通过注解读取器后继而解析
 	 */
 	/**
 	 * Create a new AnnotationConfigApplicationContext, deriving bean definitions
@@ -91,6 +112,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * e.g. {@link Configuration @Configuration} classes
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... annotatedClasses) {
+		// annotatedClasses appConfig.class
 		// 这个是由于他有父类,故而会先调用父类的构造方法,然后才会调用自己的构造方法
 		// 在自己构造方法中初始一个读取器和扫描器
 		this();
@@ -154,6 +176,13 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	//---------------------------------------------------------------------
 
 	/**
+	 * 注册单个bean给容器
+	 * 比如有新加的类可以用这个方法
+	 * 但是注册注册之后需要手动调用refresh方法去触发容器解析注册
+	 *
+	 * 有两个意思
+	 * 他可以注册一个配置类
+	 * 他还可以单独注册一个bean
 	 * Register one or more annotated classes to be processed.
 	 * <p>Note that {@link #refresh()} must be called in order for the context
 	 * to fully process the new classes.
