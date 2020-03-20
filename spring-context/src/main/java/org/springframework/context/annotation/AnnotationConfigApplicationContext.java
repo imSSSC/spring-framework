@@ -117,6 +117,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 		// 在自己构造方法中初始一个读取器和扫描器
 		this();
 		register(annotatedClasses);
+		//准备好bean工厂，实例化对象
 		refresh();
 	}
 
