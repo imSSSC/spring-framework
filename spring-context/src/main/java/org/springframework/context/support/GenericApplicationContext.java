@@ -89,6 +89,7 @@ import org.springframework.util.Assert;
  * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
  * @see org.springframework.beans.factory.support.PropertiesBeanDefinitionReader
  */
+// 容器的父类,实例化beanFactory
 public class GenericApplicationContext extends AbstractApplicationContext implements BeanDefinitionRegistry {
 
 	private final DefaultListableBeanFactory beanFactory;
@@ -105,6 +106,9 @@ public class GenericApplicationContext extends AbstractApplicationContext implem
 	 * Create a new GenericApplicationContext.
 	 * @see #registerBeanDefinition
 	 * @see #refresh
+	 */
+	/**
+	 * 创建一个bean工厂 实例化beanFactory
 	 */
 	public GenericApplicationContext(){
 			this.beanFactory = new DefaultListableBeanFactory();

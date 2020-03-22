@@ -521,12 +521,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			// 初始化属性源(property source)配置
 			prepareRefresh();
 
-			// 初始化beanFactory
+			// 得到beanFactory
 			// Tell the subclass to refresh the internal bean factory.
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
-			// 添加了一个ApplicationListenerDetector后置处理器（自行百度）
+			// 准备beanFactory
 			prepareBeanFactory(beanFactory);
 
 			try {
@@ -535,8 +535,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
-				// 1、getBeanFactoryPostProcessors()得到自己定义的（就是程序员自己写的，并且没有交给spring管理，就是没有加上@Component）
-				// 2、得到spring内部自己维护的BeanDefinitionRegistryPostProcessor
+
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
@@ -645,19 +644,21 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		return beanFactory;
 	}
 
-	/**
-	 * 配置其标准的特征,比如上下文的加载器ClassLoader和post-processors回调
-	 * 此处的beanFactory参数等于DefaultListableBeanFactory
-	 */
+
 	/**
 	 * Configure the factory's standard context characteristics,
 	 * such as the context's ClassLoader and post-processors.
 	 * @param beanFactory the BeanFactory to configure
 	 */
+	/**
+	 * 配置其标准的特征,比如上下文的加载器ClassLoader和post-processors回调
+	 * 此处的beanFactory参数等于DefaultListableBeanFactory
+	 */
 	protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		// Tell the internal bean factory to use the context's class loader etc.
+		// 添加一个类加载器
 		beanFactory.setBeanClassLoader(getClassLoader());
-		// bean表达式解析器
+		// bean表达式解析器,为了能让beanFactory解析bean表达式
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
 		// 属性编辑器
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
@@ -665,6 +666,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Configure the bean factory with context callbacks.
 		// 添加一个后置处理器 ApplicationContextAwareProcessor
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
+		// 添加了自动注入被忽略的列表
 		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);
 		beanFactory.ignoreDependencyInterface(EmbeddedValueResolverAware.class);
 		beanFactory.ignoreDependencyInterface(ResourceLoaderAware.class);
@@ -680,6 +682,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.registerResolvableDependency(ApplicationContext.class, this);
 
 		// Register early post-processor for detecting inner beans as ApplicationListeners.
+		// 添加后置处理器 ApplicationListenerDetector<自行百度>
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found.
@@ -717,6 +720,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * <p>Must be called before singleton instantiation.
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
+		// 这个地方需要注意getBeanFactoryPostProcessors()是获取自定义的
+		// 1、getBeanFactoryPostProcessors()得到自己定义的（就是程序员自己写的，并且没有交给spring管理，就是没有加上@Component）
+		// 2、得到spring内部自己维护的BeanDefinitionRegistryPostProcessor
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime

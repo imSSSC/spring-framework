@@ -85,11 +85,13 @@ abstract class ConfigurationClassUtils {
 		}
 
 		AnnotationMetadata metadata;
+		// 不同bd 不同的方式得到元数据
 		if (beanDef instanceof AnnotatedBeanDefinition &&
-				className.equals(((AnnotatedBeanDefinition) beanDef).getMetadata().getClassName())) {
+				className.equals(((AnnotatedBeanDefinition) beanDef).getMetadata().getClassName())) {// 判断是否是加了注解的bd
 			// Can reuse the pre-parsed metadata from the given BeanDefinition...
 			metadata = ((AnnotatedBeanDefinition) beanDef).getMetadata();
 		}
+
 		else if (beanDef instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) beanDef).hasBeanClass()) {
 			// Check already loaded Class if present...
 			// since we possibly can't even load the class file for this Class.
@@ -109,9 +111,17 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 
+		// 是否加了@Configuration注解
 		if (isFullConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
+		/**
+		 * 是否加了以下注解
+		 * @Component
+		 * @ComponentScan
+		 * @Import
+		 * @ImportResource
+		 */
 		else if (isLiteConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}

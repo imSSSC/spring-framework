@@ -413,6 +413,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		return candidates;
 	}
 
+	// 扫描
 	private Set<BeanDefinition> scanCandidateComponents(String basePackage) {
 		Set<BeanDefinition> candidates = new LinkedHashSet<>();
 		try {

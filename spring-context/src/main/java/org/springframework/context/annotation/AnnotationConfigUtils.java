@@ -60,6 +60,7 @@ import org.springframework.util.ClassUtils;
  * @see org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor
  * @see org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor
  */
+// 往bdm,注册内部类
 public class AnnotationConfigUtils {
 
 	/**
@@ -142,9 +143,13 @@ public class AnnotationConfigUtils {
 	 * @return a Set of BeanDefinitionHolders, containing all bean definitions
 	 * that have actually been registered by this call
 	 */
+	/**
+	 * 主要赋予beanFactory功能,也就是beanFactory可以做什么事情
+	 */
 	public static Set<BeanDefinitionHolder> registerAnnotationConfigProcessors(
 			BeanDefinitionRegistry registry, @Nullable Object source) {
 
+		// 这里工厂只有一些机器,下面让机器知道自己可以做什么
 		DefaultListableBeanFactory beanFactory = unwrapDefaultListableBeanFactory(registry);
 		if (beanFactory != null) {
 			if (!(beanFactory.getDependencyComparator() instanceof AnnotationAwareOrderComparator)) {
@@ -159,8 +164,10 @@ public class AnnotationConfigUtils {
 
 		Set<BeanDefinitionHolder> beanDefs = new LinkedHashSet<>(8);
 
-		//BeanDefinition的注册,这里很重要,需要理解注册每个bean的类型
+		// BeanDefinition的注册,这里很重要,需要理解注册每个bean的类型
+		// registerPostProcessor变成 bdh
 		if (!registry.containsBeanDefinition(CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME)) {
+			// 将类变成bd
 			RootBeanDefinition def = new RootBeanDefinition(ConfigurationClassPostProcessor.class);
 			def.setSource(source);
 			beanDefs.add(registerPostProcessor(registry, def, CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME));
@@ -218,7 +225,9 @@ public class AnnotationConfigUtils {
 	private static BeanDefinitionHolder registerPostProcessor(
 			BeanDefinitionRegistry registry, RootBeanDefinition definition, String beanName) {
 
+		// 设置bean的类型(内部的,用户的)
 		definition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
+		// bdr将bd注册到bdm
 		registry.registerBeanDefinition(beanName, definition);
 		return new BeanDefinitionHolder(definition, beanName);
 	}

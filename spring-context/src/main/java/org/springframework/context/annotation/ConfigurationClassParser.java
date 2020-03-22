@@ -247,6 +247,7 @@ class ConfigurationClassParser {
 		}
 		while (sourceClass != null);
 
+		// 一个map,用来存放扫描出来的bean(注意这里不是bean对象,而是bean的信息,因为这里还没有实例化)
 		this.configurationClasses.put(configClass, configClass);
 	}
 

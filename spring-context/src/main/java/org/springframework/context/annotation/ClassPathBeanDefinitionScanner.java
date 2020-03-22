@@ -60,6 +60,7 @@ import org.springframework.util.PatternMatchUtils;
  * @see org.springframework.stereotype.Service
  * @see org.springframework.stereotype.Controller
  */
+// 扫描我们的类,转换成bd
 public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateComponentProvider {
 
 	private final BeanDefinitionRegistry registry;
@@ -272,6 +273,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
 		for (String basePackage : basePackages) {
+			// 扫描basePackage路径下的java文件
+			// 并转成bd
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
 			for (BeanDefinition candidate : candidates) {
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);

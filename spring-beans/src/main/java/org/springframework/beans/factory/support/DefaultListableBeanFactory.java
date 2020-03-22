@@ -111,6 +111,7 @@ import org.springframework.util.StringUtils;
  * @see #getBean
  * @see #resolveDependency
  */
+//他是beanFactory,他也是一个注册器
 @SuppressWarnings("serial")
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory
 		implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable {
@@ -145,6 +146,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	private boolean allowEagerClassLoading = true;
 
 	/** Optional OrderComparator for dependency Lists and arrays */
+	/**
+	 * 处理bean实例化的顺序
+	 */
 	@Nullable
 	private Comparator<Object> dependencyComparator;
 
@@ -155,6 +159,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	private final Map<Class<?>, Object> resolvableDependencies = new ConcurrentHashMap<>(16);
 
 	/** Map of bean definition objects, keyed by bean name */
+	/**
+	 * 类描述的map key:name,value: beanDefinition
+	 */
 	private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
 
 	/** Map of singleton and non-singleton bean names, keyed by dependency type */

@@ -65,7 +65,8 @@ import org.springframework.lang.Nullable;
  * @see BeanFactoryPostProcessor
  */
 /**
- * spring bean 后置器
+ * spring bean 后置器,能够让程序员插手bean实例化
+ * 后置bean处理器
  */
 public interface BeanPostProcessor {
 

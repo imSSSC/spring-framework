@@ -31,6 +31,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 3.0
  */
+// 解析bean的表达式
 public interface BeanExpressionResolver {
 
 	/**

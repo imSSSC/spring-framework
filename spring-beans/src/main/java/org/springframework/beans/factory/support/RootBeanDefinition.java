@@ -50,6 +50,10 @@ import org.springframework.util.Assert;
  * @see GenericBeanDefinition
  * @see ChildBeanDefinition
  */
+
+/**
+ * 是spring内部的类的描述 内部bd
+ */
 @SuppressWarnings("serial")
 public class RootBeanDefinition extends AbstractBeanDefinition {
 

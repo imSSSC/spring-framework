@@ -45,6 +45,7 @@ import org.springframework.util.Assert;
  * @since 3.0
  * @see AnnotationConfigApplicationContext#register
  */
+// bd读取器
 public class AnnotatedBeanDefinitionReader {
 
 	private final BeanDefinitionRegistry registry;
@@ -55,17 +56,6 @@ public class AnnotatedBeanDefinitionReader {
 
 	private ConditionEvaluator conditionEvaluator;
 
-
-	/**
-	 * 这里的beanDefinitionRegistry registry是通过在annotationConfigApplicationContext
-	 * 的构造方法中传进来的this
-	 * 由此说明AnnotationConfigApplicationContext是一个BeanDefinitionRegistry类型的类
-	 * 何以证明我们可以看到AnnotationConfigApplicationContext的类关系:
-	 * GenericApplicationContext extends AbstractApplicationContext implement BeanDefinitionRegistry
-	 * 看到他实现了BeanDefinitionRegistry证明上面的说法,那么BeanDefinitionRegistry的作用是什么呢?
-	 * BeanDefinitionRegistry 顾名思义就是BeanDefinition的注册器
-	 * 那么何为BeanDefinition呢? 参考BeanDefinition的源码的注释
-	 */
 	/**
 	 * Create a new {@code AnnotatedBeanDefinitionReader} for the given registry.
 	 * If the registry is {@link EnvironmentCapable}, e.g. is an {@code ApplicationContext},
@@ -75,6 +65,16 @@ public class AnnotatedBeanDefinitionReader {
 	 * in the form of a {@code BeanDefinitionRegistry}
 	 * @see #AnnotatedBeanDefinitionReader(BeanDefinitionRegistry, Environment)
 	 * @see #setEnvironment(Environment)
+	 */
+	/**
+	 * 这里的beanDefinitionRegistry registry是通过在annotationConfigApplicationContext
+	 * 的构造方法中传进来的this
+	 * 由此说明AnnotationConfigApplicationContext是一个BeanDefinitionRegistry类型的类
+	 * 何以证明我们可以看到AnnotationConfigApplicationContext的类关系:
+	 * GenericApplicationContext extends AbstractApplicationContext implement BeanDefinitionRegistry
+	 * 看到他实现了BeanDefinitionRegistry证明上面的说法,那么BeanDefinitionRegistry的作用是什么呢?
+	 * BeanDefinitionRegistry 顾名思义就是BeanDefinition的注册器
+	 * 那么何为BeanDefinition呢? 参考BeanDefinition的源码的注释
 	 */
 	public AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry) {
 		this(registry, getOrCreateEnvironment(registry));
@@ -304,7 +304,7 @@ public class AnnotatedBeanDefinitionReader {
 		 * AnnotationConfigApplicationContext在初始化的时候通过调用父类的构造方法
 		 * 实例化了DefaultListableBeanFactory
 		 * registerBeanDefinition里面就是把definitionHolder这个数据结构包含的信息注册到
-		 * DefaultListableBeanFactory这个工厂
+		 * DefaultListableBeanFactory这个工厂(里面的bdm)
 		 */
 		BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, this.registry);
 	}

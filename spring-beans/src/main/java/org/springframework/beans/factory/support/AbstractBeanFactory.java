@@ -148,6 +148,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	private final List<StringValueResolver> embeddedValueResolvers = new CopyOnWriteArrayList<>();
 
 	/** BeanPostProcessors to apply in createBean */
+	// 维护bean后置处理器,等bean实例化的时候能,遍历后置处理器,够插手bean的实例化过程
 	private final List<BeanPostProcessor> beanPostProcessors = new CopyOnWriteArrayList<>();
 
 	/** Indicates whether any InstantiationAwareBeanPostProcessors have been registered */

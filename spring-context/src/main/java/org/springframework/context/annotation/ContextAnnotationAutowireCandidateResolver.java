@@ -44,6 +44,7 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @since 4.0
  */
+//提供处理延迟加载的功能
 public class ContextAnnotationAutowireCandidateResolver extends QualifierAnnotationAutowireCandidateResolver {
 
 	@Override

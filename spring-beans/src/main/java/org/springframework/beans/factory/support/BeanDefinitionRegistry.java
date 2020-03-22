@@ -45,6 +45,12 @@ import org.springframework.core.AliasRegistry;
  * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
  * @see PropertiesBeanDefinitionReader
  */
+
+/**
+ * 他是bd注册器,
+ * 他本身就是AnnotationConfigApplicationContext
+ * 作用:主要将bd放入到BeanDefinitionMap中
+ */
 public interface BeanDefinitionRegistry extends AliasRegistry {
 
 	/**

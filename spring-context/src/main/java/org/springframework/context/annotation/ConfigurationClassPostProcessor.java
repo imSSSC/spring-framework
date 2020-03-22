@@ -264,10 +264,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
-		// 1、得到bd当中描述的类的元数据（类的信息）
-		// 2、判断是不是加了@Configuration   metadata.isAnnotated(Configuration.class.getName())
-		// 3、如果加了@Configuration，添加到一个set当中,把这个set传给下面的方法去解析
 		for (String beanName : candidateNames) {
+			// 得到bd当中描述的类的元数据（类的信息）
 			BeanDefinition beanDef = registry.getBeanDefinition(beanName);
 			if (ConfigurationClassUtils.isFullConfigurationClass(beanDef) ||
 					ConfigurationClassUtils.isLiteConfigurationClass(beanDef)) {
@@ -275,6 +273,9 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 					logger.debug("Bean definition has already been processed as a configuration class: " + beanDef);
 				}
 			}
+
+			// 判断是不是加了@Configuration  @Import，@Component 。。。注解
+			// 如果加了@Configuration，添加到一个set当中,把这个set传给下面的方法去解析
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}
@@ -311,10 +312,12 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 
 		// Parse each @Configuration class
 		// 扫描包
+		// 实例化ConfigurationClassParser 为了解析 配置类
 		ConfigurationClassParser parser = new ConfigurationClassParser(
 				this.metadataReaderFactory, this.problemReporter, this.environment,
 				this.resourceLoader, this.componentScanBeanNameGenerator, registry);
 
+		// 定义两个集合方便去重
 		Set<BeanDefinitionHolder> candidates = new LinkedHashSet<>(configCandidates);
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
 		do {
@@ -330,6 +333,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 						registry, this.sourceExtractor, this.resourceLoader, this.environment,
 						this.importBeanNameGenerator, parser.getImportRegistry());
 			}
+			// 扫描出来的bean对应bd添加到map中
 			this.reader.loadBeanDefinitions(configClasses);
 			alreadyParsed.addAll(configClasses);
 

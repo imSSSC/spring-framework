@@ -59,9 +59,7 @@ final class PostProcessorRegistrationDelegate {
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
 
-			// 调用这个方法
-			// 循环所有的BeanDefinitionRegistryPostProcessor
-			// 该方法内部postProcessor.postProcessBeanDefinitionRegistry
+			// 这里放的是我们自己注册的 BeanFactoryPostProcessor 和 BeanDefinitionRegistryPostProcessor
 			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 					BeanDefinitionRegistryPostProcessor registryProcessor =
@@ -79,9 +77,10 @@ final class PostProcessorRegistrationDelegate {
 			// uninitialized to let the bean factory post-processors apply to them!
 			// Separate between BeanDefinitionRegistryPostProcessors that implement
 			// PriorityOrdered, Ordered, and the rest.
+			// 放的是spring自己的BeanDefinitionRegistryPostProcessor
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
-
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
+			// getBeanNamesForType 通过一个类型,可以得到一个bean的名字这里的type指的是bd当中描述当前类的class类型
 			String[] postProcessorNames =
 					beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
@@ -103,9 +102,14 @@ final class PostProcessorRegistrationDelegate {
 					processedBeans.add(ppName);
 				}
 			}
+			// 排序不重要
 			sortPostProcessors(currentRegistryProcessors, beanFactory);
+			// 合并list BeanDefinitionRegistryPostProcessor ,不重要
 			registryProcessors.addAll(currentRegistryProcessors);
+
+			// 最重要,注意这里是方法调用
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
+			// 临时变量,需要删除
 			currentRegistryProcessors.clear();
 
 			// Finally, invoke all other BeanDefinitionRegistryPostProcessors until no further ones appear.

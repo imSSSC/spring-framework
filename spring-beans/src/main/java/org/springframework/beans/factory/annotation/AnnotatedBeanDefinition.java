@@ -31,6 +31,10 @@ import org.springframework.lang.Nullable;
  * @see AnnotatedGenericBeanDefinition
  * @see org.springframework.core.type.AnnotationMetadata
  */
+
+/**
+ * 是加了注解的类的描述 加了注解的bd
+ */
 public interface AnnotatedBeanDefinition extends BeanDefinition {
 
 	/**

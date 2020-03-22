@@ -141,6 +141,7 @@ public class BeanDefinitionReaderUtils {
 	 * @param registry the bean factory to register with
 	 * @throws BeanDefinitionStoreException if registration failed
 	 */
+	// 通过bdr将bd注册到bdm
 	public static void registerBeanDefinition(
 			BeanDefinitionHolder definitionHolder, BeanDefinitionRegistry registry)
 			throws BeanDefinitionStoreException {

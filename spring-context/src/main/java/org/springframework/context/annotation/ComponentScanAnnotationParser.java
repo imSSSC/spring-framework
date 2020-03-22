@@ -73,6 +73,7 @@ class ComponentScanAnnotationParser {
 	}
 
 
+	// 解析扫描的基本信息,是否过滤,是否扫描新的包
 	public Set<BeanDefinitionHolder> parse(AnnotationAttributes componentScan, final String declaringClass) {
 		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(this.registry,
 				componentScan.getBoolean("useDefaultFilters"), this.environment, this.resourceLoader);
