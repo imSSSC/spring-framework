@@ -52,7 +52,7 @@ import org.springframework.util.Assert;
  */
 
 /**
- * 是spring内部的类的描述 内部bd
+ * 是spring内部的类的描述 只能作为父bd
  */
 @SuppressWarnings("serial")
 public class RootBeanDefinition extends AbstractBeanDefinition {
