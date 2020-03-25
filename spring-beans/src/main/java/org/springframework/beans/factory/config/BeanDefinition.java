@@ -92,6 +92,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	/**
 	 * Set the name of the parent definition of this bean definition, if any.
 	 */
+	//设置父bd
 	void setParentName(@Nullable String parentName);
 
 	/**
@@ -108,6 +109,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * @see #setFactoryBeanName
 	 * @see #setFactoryMethodName
 	 */
+	// 设置bd的类型--名字
 	void setBeanClassName(@Nullable String beanClassName);
 
 	/**
@@ -156,6 +158,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * Set the names of the beans that this bean depends on being initialized.
 	 * The bean factory will guarantee that these beans get initialized first.
 	 */
+	//在实例当前类,需要先实例其他类
 	void setDependsOn(@Nullable String... dependsOn);
 
 	/**
@@ -171,6 +174,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * if the specified bean is not marked as an autowire candidate. As a consequence,
 	 * autowiring by name will nevertheless inject a bean if the name matches.
 	 */
+	// 是否自动装配
 	void setAutowireCandidate(boolean autowireCandidate);
 
 	/**
@@ -183,6 +187,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * <p>If this value is {@code true} for exactly one bean among multiple
 	 * matching candidates, it will serve as a tie-breaker.
 	 */
+	// 是否主要装配对象
 	void setPrimary(boolean primary);
 
 	/**
@@ -224,12 +229,14 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * <p>The returned instance can be modified during bean factory post-processing.
 	 * @return the ConstructorArgumentValues object (never {@code null})
 	 */
+	//构造方法的参数值
 	ConstructorArgumentValues getConstructorArgumentValues();
 
 	/**
 	 * Return if there are constructor argument values defined for this bean.
 	 * @since 5.0.2
 	 */
+	//判断 构造方法有没有传值
 	default boolean hasConstructorArgumentValues() {
 		return !getConstructorArgumentValues().isEmpty();
 	}
@@ -239,12 +246,14 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * <p>The returned instance can be modified during bean factory post-processing.
 	 * @return the MutablePropertyValues object (never {@code null})
 	 */
+	// set方法的值
 	MutablePropertyValues getPropertyValues();
 
 	/**
 	 * Return if there are property values values defined for this bean.
 	 * @since 5.0.2
 	 */
+	//判断set是否有值
 	default boolean hasPropertyValues() {
 		return !getPropertyValues().isEmpty();
 	}
