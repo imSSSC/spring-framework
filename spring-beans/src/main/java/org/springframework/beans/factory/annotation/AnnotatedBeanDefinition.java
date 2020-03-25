@@ -33,7 +33,8 @@ import org.springframework.lang.Nullable;
  */
 
 /**
- * 是加了注解的类的描述 加了注解的bd
+ * 是加了注解的bd 或者 register(XX.Class)
+ * 加了这个注解的 @Configuration
  */
 public interface AnnotatedBeanDefinition extends BeanDefinition {
 
