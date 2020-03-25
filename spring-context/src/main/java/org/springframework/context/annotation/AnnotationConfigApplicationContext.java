@@ -92,7 +92,8 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 		// 这里的AnnotatedBeanDefinitionReader主要读取spring的bd 加了注解的@Configuration
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 
-		// 读取扫描的bd
+		// 读取扫描的bd,
+		// spring 提供api用来动态扫描注解
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 
