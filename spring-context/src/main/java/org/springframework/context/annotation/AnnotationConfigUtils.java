@@ -227,7 +227,7 @@ public class AnnotationConfigUtils {
 
 		// 设置bean的类型(内部的,用户的)
 		definition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
-		// bdr将bd注册到bdm
+		// rbd将bd注册到bdm
 		registry.registerBeanDefinition(beanName, definition);
 		return new BeanDefinitionHolder(definition, beanName);
 	}
