@@ -89,7 +89,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 		 * 创建一个读取注解的Bean定义读取器
 		 * 什么是bean定义? BeanDefinition
 		 */
-		// 这里的AnnotatedBeanDefinitionReader主要读取spring的bd
+		// 这里的AnnotatedBeanDefinitionReader主要读取spring的bd 加了注解的@Configuration
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 
 		// 读取扫描的bd

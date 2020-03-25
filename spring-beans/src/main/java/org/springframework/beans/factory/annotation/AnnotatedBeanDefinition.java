@@ -32,10 +32,6 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.core.type.AnnotationMetadata
  */
 
-/**
- * 是加了注解的bd 或者 register(XX.Class)
- * 加了这个注解的 @Configuration
- */
 public interface AnnotatedBeanDefinition extends BeanDefinition {
 
 	/**
