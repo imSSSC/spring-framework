@@ -84,7 +84,7 @@ import static org.springframework.context.annotation.AnnotationConfigUtils.CONFI
  * @author Phillip Webb
  * @since 3.0
  */
-// 最重要的后置工厂处理器
+// 内部最重要的后置工厂处理器
 public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPostProcessor,
 		PriorityOrdered, ResourceLoaderAware, BeanClassLoaderAware, EnvironmentAware {
 
@@ -263,6 +263,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	// 拿出的所有bd，然后判断bd时候包含了@Configuration、@Import，@Compent。。。注解
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
+		// 获取所有内置的bd
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
 		for (String beanName : candidateNames) {

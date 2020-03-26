@@ -48,15 +48,19 @@ import org.springframework.lang.Nullable;
  */
 final class PostProcessorRegistrationDelegate {
 
+	// 主要目的先执行 BeanDefinitionRegistryPostProcessors, 再执行 BeanFactoryPostProcessor
 	public static void invokeBeanFactoryPostProcessors(
 			ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
 
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
+		// 用过的bean
 		Set<String> processedBeans = new HashSet<>();
 
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
+			// 所有name的名字
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
+			//所有的bd
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
 
 			// 这里放的是我们自己注册的 BeanFactoryPostProcessor 和 BeanDefinitionRegistryPostProcessor
@@ -89,6 +93,7 @@ final class PostProcessorRegistrationDelegate {
 					// 这行代码非常重要, beanFactory.getBean()---直接从容器拿
 					// 如果拿不到--实例化这个bean
 					// 说明spring 实例化一个bean,只需要有bd.
+					// 为了得到 ConfigurationClassPostProcessor (他可以扫描)
 					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
 					processedBeans.add(ppName);
 				}
@@ -101,6 +106,7 @@ final class PostProcessorRegistrationDelegate {
 			// Next, invoke the BeanDefinitionRegistryPostProcessors that implement Ordered.
 			postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
+				// 判断是否用过这个类
 				if (!processedBeans.contains(ppName) && beanFactory.isTypeMatch(ppName, Ordered.class)) {
 					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
 					processedBeans.add(ppName);
@@ -111,7 +117,7 @@ final class PostProcessorRegistrationDelegate {
 			// 合并list BeanDefinitionRegistryPostProcessor ,不重要
 			registryProcessors.addAll(currentRegistryProcessors);
 
-			// 最重要,注意这里是方法调用
+			// 最重要,注意这里是方法调用,完成扫描
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 			// 临时变量,需要删除
 			currentRegistryProcessors.clear();
