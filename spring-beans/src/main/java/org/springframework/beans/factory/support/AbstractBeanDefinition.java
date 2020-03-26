@@ -102,6 +102,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * Constant that indicates no dependency check at all.
 	 * @see #setDependencyCheck
 	 */
+	// 依赖检查 不重要
 	public static final int DEPENDENCY_CHECK_NONE = 0;
 
 	/**
@@ -134,6 +135,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * <p>Currently, the method names detected during destroy method inference
 	 * are "close" and "shutdown", if present on the specific bean class.
 	 */
+	// 不重要 bean销毁的时候做一些事情. 执行close()/shutdown()方法
 	public static final String INFER_METHOD = "(inferred)";
 
 
