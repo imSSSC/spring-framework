@@ -262,6 +262,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 */
 	// 拿出的所有bd，然后判断bd时候包含了@Configuration、@Import，@Compent。。。注解
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
+		// 存有@Configuration的bd
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
 		// 获取所有内置的bd
 		String[] candidateNames = registry.getBeanDefinitionNames();
