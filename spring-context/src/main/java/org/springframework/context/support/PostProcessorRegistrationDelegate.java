@@ -60,7 +60,7 @@ final class PostProcessorRegistrationDelegate {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 			// 所有name的名字
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
-			//所有的bd
+			// 所有的bd
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
 
 			// 这里放的是我们自己注册的 BeanFactoryPostProcessor 和 BeanDefinitionRegistryPostProcessor
@@ -98,9 +98,13 @@ final class PostProcessorRegistrationDelegate {
 					processedBeans.add(ppName);
 				}
 			}
+			// 排序不重要
 			sortPostProcessors(currentRegistryProcessors, beanFactory);
+			// 合并list BeanDefinitionRegistryPostProcessor ,不重要
 			registryProcessors.addAll(currentRegistryProcessors);
+			// 最重要,注意这里是方法调用,完成扫描
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
+			// 临时变量,需要删除
 			currentRegistryProcessors.clear();
 
 			// Next, invoke the BeanDefinitionRegistryPostProcessors that implement Ordered.
@@ -112,14 +116,10 @@ final class PostProcessorRegistrationDelegate {
 					processedBeans.add(ppName);
 				}
 			}
-			// 排序不重要
-			sortPostProcessors(currentRegistryProcessors, beanFactory);
-			// 合并list BeanDefinitionRegistryPostProcessor ,不重要
-			registryProcessors.addAll(currentRegistryProcessors);
 
-			// 最重要,注意这里是方法调用,完成扫描
+			sortPostProcessors(currentRegistryProcessors, beanFactory);
+			registryProcessors.addAll(currentRegistryProcessors);
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
-			// 临时变量,需要删除
 			currentRegistryProcessors.clear();
 
 			// Finally, invoke all other BeanDefinitionRegistryPostProcessors until no further ones appear.
