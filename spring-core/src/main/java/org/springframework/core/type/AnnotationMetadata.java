@@ -38,6 +38,7 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 	 * are <em>present</em> on the underlying class.
 	 * @return the annotation type names
 	 */
+	// 注解的类型
 	Set<String> getAnnotationTypes();
 
 	/**
@@ -86,6 +87,7 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 	 * annotation. The return value will be an empty set if no methods match
 	 * the annotation type.
 	 */
+	// bd有哪些注解
 	Set<MethodMetadata> getAnnotatedMethods(String annotationName);
 
 }

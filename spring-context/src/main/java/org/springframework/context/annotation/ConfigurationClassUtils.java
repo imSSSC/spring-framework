@@ -86,9 +86,11 @@ abstract class ConfigurationClassUtils {
 
 		AnnotationMetadata metadata;
 		// 不同bd 不同的方式得到元数据
+		// @configuration的bd是 这个类型AnnotatedBeanDefinition的子类
 		if (beanDef instanceof AnnotatedBeanDefinition &&
 				className.equals(((AnnotatedBeanDefinition) beanDef).getMetadata().getClassName())) {// 判断是否是加了注解的bd
 			// Can reuse the pre-parsed metadata from the given BeanDefinition...
+			// 获得bd的metadata,metadata主要是包括bd的注解
 			metadata = ((AnnotatedBeanDefinition) beanDef).getMetadata();
 		}
 

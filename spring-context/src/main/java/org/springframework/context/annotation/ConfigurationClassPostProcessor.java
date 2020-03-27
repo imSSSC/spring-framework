@@ -269,6 +269,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		for (String beanName : candidateNames) {
 			// 得到bd当中描述的类的元数据（类的信息）
 			BeanDefinition beanDef = registry.getBeanDefinition(beanName);
+			// isFullConfigurationClass是否被解析过了, 被解析过了,就会往bd的attributes map.put("configurationClass","full")
+			// isLiteConfigurationClass , map.put("configurationClass","lite")
 			if (ConfigurationClassUtils.isFullConfigurationClass(beanDef) ||
 					ConfigurationClassUtils.isLiteConfigurationClass(beanDef)) {
 				if (logger.isDebugEnabled()) {
@@ -276,7 +278,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 				}
 			}
 
-			// 判断是不是加了@Configuration  @Import，@Component 。。。注解
+			// 判断是不是加了@Configuration  @Import，@Component 。。。全注解
 			// 如果加了@Configuration，添加到一个set当中,把这个set传给下面的方法去解析
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
@@ -323,6 +325,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		Set<BeanDefinitionHolder> candidates = new LinkedHashSet<>(configCandidates);
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
 		do {
+			// 解析类的注解
 			parser.parse(candidates);
 			parser.validate();
 
