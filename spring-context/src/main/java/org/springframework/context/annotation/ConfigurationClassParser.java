@@ -604,7 +604,12 @@ class ConfigurationClassParser {
 		else {
 			this.importStack.push(configClass);
 			try {
+				// 处理@Import内部的注解和类
+				// normal类
+				// @ImportSelect注解
+				// ImportBeanDefinitionRegistrar接口
 				for (SourceClass candidate : importCandidates) {
+					// 处理@ImportSelect
 					if (candidate.isAssignable(ImportSelector.class)) {
 						// Candidate class is an ImportSelector -> delegate to it to determine imports
 						Class<?> candidateClass = candidate.loadClass();
@@ -621,6 +626,7 @@ class ConfigurationClassParser {
 							processImports(configClass, currentSourceClass, importSourceClasses, false);
 						}
 					}
+					// 处理ImportBeanDefinitionRegistrar接口
 					else if (candidate.isAssignable(ImportBeanDefinitionRegistrar.class)) {
 						// Candidate class is an ImportBeanDefinitionRegistrar ->
 						// delegate to it to register additional bean definitions
@@ -634,7 +640,7 @@ class ConfigurationClassParser {
 						// 这里非常重要,把实例化好的ImportBeanDefinitionRegister存到 map
 						configClass.addImportBeanDefinitionRegistrar(registrar, currentSourceClass.getMetadata());
 					}
-					else {
+					else {// 处理normal类
 						// Candidate class not an ImportSelector or ImportBeanDefinitionRegistrar ->
 						// process it as an @Configuration class
 						this.importStack.registerImport(

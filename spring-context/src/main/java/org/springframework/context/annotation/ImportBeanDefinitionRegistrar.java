@@ -47,6 +47,7 @@ import org.springframework.core.type.AnnotationMetadata;
  * @see ImportSelector
  * @see Configuration
  */
+// 他可以提供方法,注册bd,在所有bd注册之前执行的
 public interface ImportBeanDefinitionRegistrar {
 
 	/**

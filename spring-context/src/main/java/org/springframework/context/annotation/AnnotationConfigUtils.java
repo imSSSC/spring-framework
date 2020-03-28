@@ -164,8 +164,10 @@ public class AnnotationConfigUtils {
 
 		Set<BeanDefinitionHolder> beanDefs = new LinkedHashSet<>(8);
 
-		// BeanDefinition的注册,这里很重要,需要理解注册每个bean的类型
+		// BeanDefinition的注册,这里很重要,需要理解注册每个bean的类型 5个 beanPostProcessor 1个 beanFactoryPostProcessor
+
 		// registerPostProcessor变成 bdh
+		// 唯一内部的 beanFactoryPostProcessor
 		if (!registry.containsBeanDefinition(CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME)) {
 			// 将类变成bd
 			RootBeanDefinition def = new RootBeanDefinition(ConfigurationClassPostProcessor.class);
@@ -173,6 +175,7 @@ public class AnnotationConfigUtils {
 			beanDefs.add(registerPostProcessor(registry, def, CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME));
 		}
 
+		// 以下 5个 beanPostProcessor
 		if (!registry.containsBeanDefinition(AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME)) {
 			RootBeanDefinition def = new RootBeanDefinition(AutowiredAnnotationBeanPostProcessor.class);
 			def.setSource(source);
