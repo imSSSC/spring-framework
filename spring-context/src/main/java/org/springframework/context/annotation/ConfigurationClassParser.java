@@ -170,8 +170,7 @@ class ConfigurationClassParser {
 			try {
 				if (bd instanceof AnnotatedBeanDefinition) {
 					// 解析注解对象,并且把解析出来的bd放到map,但是这里的bd指的是普通的
-					// 普通的比如@Bean和各种beanFactoryPostProcessor得到的bean不在
-					// 但是这里解析,只是不put而已
+					// 普通的比如@Bean和各种beanFactoryPostProcessor得到的bean
 					parse(((AnnotatedBeanDefinition) bd).getMetadata(), holder.getBeanName());
 				}
 				else if (bd instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) bd).hasBeanClass()) {
@@ -295,7 +294,6 @@ class ConfigurationClassParser {
 				!this.conditionEvaluator.shouldSkip(sourceClass.getMetadata(), ConfigurationPhase.REGISTER_BEAN)) {
 			for (AnnotationAttributes componentScan : componentScans) {
 
-
 				// The config class is annotated with @ComponentScan -> perform the scan immediately
 				// 扫描普通类,解析扫描的一些基本信息，比如是否过滤，比如是否加入新的包。。。。。
 				// 这里扫描出来索引@Component
@@ -317,8 +315,22 @@ class ConfigurationClassParser {
 			}
 		}
 
+		/**
+		 * 上面的代码就是扫描普通类---@Component,并且放到了map当中
+		 */
+
 		// Process any @Import annotations
 		// 3. 处理@Import
+		/**
+		 * 这里处理的import是需要判断我们的类当中是否有@import注解,
+		 * 如果有则把@import当中的值拿出来,是一个类
+		 * 比如@import(xxx.class)那么这里便把x传进去解析
+		 * 在解析的过程中如果发觉是一个importSelector类,那么就会去回调selector的方法
+		 * 返回一个字符串(类名),通过这个字符串得到一个类,继而再递归调用本方法来处理这个类
+		 *
+		 * 总而言之,@import(xxx.class),那么xxx这个类会被解析,
+		 * 如果xxx是selector的那么它当中返回的类虽然没有直接加上@Import,但是也会直接解析
+		 */
 		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
 		// Process any @ImportResource annotations
@@ -621,9 +633,9 @@ class ConfigurationClassParser {
 			this.importStack.push(configClass);
 			try {
 				// 处理@Import内部的注解和类
-				// normal类
-				// @ImportSelect注解
-				// ImportBeanDefinitionRegistrar接口
+				// Import normal类                     先configurationClasses 然后再注册loadBean
+				// @ImportSelect注解                   先configurationClasses 然后再注册loadBean
+				// ImportBeanDefinitionRegistrar接口   先放到importBeanDefinitionRegistrar 然后再注册
 				for (SourceClass candidate : importCandidates) {
 
 					// 1. 处理@ImportSelect
@@ -658,12 +670,16 @@ class ConfigurationClassParser {
 						ParserStrategyUtils.invokeAwareMethods(
 								registrar, this.environment, this.resourceLoader, this.registry);
 						// 这里非常重要,把实例化好的ImportBeanDefinitionRegister存到 map
+						// 添加到一个list当中和importSelector处理方式不一样
 						configClass.addImportBeanDefinitionRegistrar(registrar, currentSourceClass.getMetadata());
 					}
 
 					else {// 3. 处理normal类
 						// Candidate class not an ImportSelector or ImportBeanDefinitionRegistrar ->
 						// process it as an @Configuration class
+						// configurationClasses是一个集合,会在后面拿出来解析成bd继而注册
+						// 可以看到普通类在扫毛出来的时候就被注册了
+						// 如果是importSelector,会先放到configurationClass后面进行出来注册
 						this.importStack.registerImport(
 								currentSourceClass.getMetadata(), candidate.getMetadata().getClassName());
 						processConfigurationClass(candidate.asConfigClass(configClass));
