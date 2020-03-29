@@ -94,6 +94,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 
 		// 读取扫描的bd,
 		// spring 提供api用来动态扫描注解
+		// 这里的scanner积极是为了程序员能够在外部调用AnnotationConfigApplicationContext对象的scan
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 

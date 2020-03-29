@@ -113,18 +113,20 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 
-		// 是否加了@Configuration注解
+		// 是否加了@Configuration注解,全注解类
 		if (isFullConfigurationCandidate(metadata)) {
+			// 如果加了@Configuration注解,则为BeanDefinition设置属性为full
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
-		/**
-		 * 是否加了以下注解
-		 * @Component
-		 * @ComponentScan
-		 * @Import
-		 * @ImportResource
-		 */
+
+		// 是否加了以下注解
+		// @Component
+		// @ComponentScan
+		// @Import
+		// @ImportResource
+		// 部分注解类
 		else if (isLiteConfigurationCandidate(metadata)) {
+			// 设置属性为lite
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}
 		else {

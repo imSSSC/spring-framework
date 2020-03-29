@@ -267,6 +267,10 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		// 获取所有内置的bd
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
+		/**
+		 * full
+		 * lite
+		 */
 		for (String beanName : candidateNames) {
 			// 得到bd当中描述的类的元数据（类的信息）
 			BeanDefinition beanDef = registry.getBeanDefinition(beanName);
@@ -279,7 +283,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 				}
 			}
 
-			// 判断是不是加了@Configuration  @Import，@Component 。。。全注解
+			// 判断是不是加了@Configuration,如果加了,下面的注解就不会判断了
+			// @Import，@Component 。。。全注解
 			// 如果加了@Configuration，添加到一个set当中,把这个set传给下面的方法去解析
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
@@ -299,11 +304,16 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		});
 
 		// Detect any custom bean name generation strategy supplied through the enclosing application context
+		// 如果BeanDefinitionRegistry是SingletonBeanRegistry子类的话
+		// 由于我们当前传入的是DefaultListableBeanFactory,是SingletonBeanRegistry的子类
+		// 因此会将registry强转为SingletonBeanRegistry
 		SingletonBeanRegistry sbr = null;
 		if (registry instanceof SingletonBeanRegistry) {
 			sbr = (SingletonBeanRegistry) registry;
 			if (!this.localBeanNameGeneratorSet) {
 				BeanNameGenerator generator = (BeanNameGenerator) sbr.getSingleton(CONFIGURATION_BEAN_NAME_GENERATOR);
+				// SingletonBeanRegistry中有id
+				// 如果有则利用他的,否则则是spring默认的
 				if (generator != null) {
 					this.componentScanBeanNameGenerator = generator;
 					this.importBeanNameGenerator = generator;
@@ -317,12 +327,12 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 
 		// Parse each @Configuration class
 		// 扫描包
-		// 实例化ConfigurationClassParser 为了解析 配置类
+		// 实例化ConfigurationClassParser 为了解析配置类
 		ConfigurationClassParser parser = new ConfigurationClassParser(
 				this.metadataReaderFactory, this.problemReporter, this.environment,
 				this.resourceLoader, this.componentScanBeanNameGenerator, registry);
 
-		// 定义两个集合方便去重
+		// 定义两个集合方便去重,因为可能有多个配置类重复了
 		Set<BeanDefinitionHolder> candidates = new LinkedHashSet<>(configCandidates);
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
 		do {

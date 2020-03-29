@@ -275,16 +275,25 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
 		for (String basePackage : basePackages) {
 			// 扫描basePackage路径下的java文件
-			// 并转成bd
+			// 符合条件的并把它并转成bd
+			// 比较重要这个方法
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
+
+
 			for (BeanDefinition candidate : candidates) {
+				// 解析scope属性
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
 				candidate.setScope(scopeMetadata.getScopeName());
 				String beanName = this.beanNameGenerator.generateBeanName(candidate, this.registry);
 				if (candidate instanceof AbstractBeanDefinition) {
+					// 如果这个类是AbstractBeanDefinition的子类
+					// 写为他设置默认值,比如lazy,init,destroy
 					postProcessBeanDefinition((AbstractBeanDefinition) candidate, beanName);
 				}
 				if (candidate instanceof AnnotatedBeanDefinition) {
+					// 检查并且处理常用的注解
+					// 这里的处理主要是指把常用注解的值设置到AnnotatedBeanDefinition当中
+					// 当前前提是这个类必须是AnnotatedBeanDefinition类型的,说白了就是加了注解
 					AnnotationConfigUtils.processCommonDefinitionAnnotations((AnnotatedBeanDefinition) candidate);
 				}
 				if (checkCandidate(beanName, candidate)) {
@@ -292,6 +301,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 					definitionHolder =
 							AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
 					beanDefinitions.add(definitionHolder);
+
+					// 加入到map当中
 					registerBeanDefinition(definitionHolder, this.registry);
 				}
 			}
