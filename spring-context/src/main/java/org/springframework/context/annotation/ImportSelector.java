@@ -39,11 +39,23 @@ import org.springframework.core.type.AnnotationMetadata;
  * (see {@link DeferredImportSelector} for details).
  *
  * @author Chris Beams
- * @since 3.1
  * @see DeferredImportSelector
  * @see Import
  * @see ImportBeanDefinitionRegistrar
  * @see Configuration
+ * @since 3.1
+ */
+// 通过selectImports()方法,可以返回一个类名(全名),把他变成bd,动态添加bd(这个bd是死的).
+// 比如 @Import(MyImportSelector.class) 添加到配置类上
+// 他是import3种方式之一
+/**
+ *
+ *  public class MyImportSelector implements ImportSelector {
+ *     @Override
+ *     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
+ *         return new String[]{SnakeDao1.class.getName()};
+ *     }
+ *  }
  */
 public interface ImportSelector {
 

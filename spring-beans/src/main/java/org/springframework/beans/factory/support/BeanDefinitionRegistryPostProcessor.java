@@ -31,6 +31,8 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
  * @see org.springframework.context.annotation.ConfigurationClassPostProcessor
  */
 // 扩展类 他是BeanFactoryPostProcessor的扩展子类
+	// 在 父类执行之前,先执行他(有spring提供的,也有自定义的,自定义的先执行) 比如 spring的 ConfigurationClassPostProcessor
+	// 主要作用是
 public interface BeanDefinitionRegistryPostProcessor extends BeanFactoryPostProcessor {
 
 	/**

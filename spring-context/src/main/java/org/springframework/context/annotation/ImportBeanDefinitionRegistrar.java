@@ -42,12 +42,22 @@ import org.springframework.core.type.AnnotationMetadata;
  * <p>See implementations and associated unit tests for usage examples.
  *
  * @author Chris Beams
- * @since 3.1
  * @see Import
  * @see ImportSelector
  * @see Configuration
+ * @since 3.1
  */
 // 他可以提供方法,注册bd,在所有bd注册之前执行的
+// 他是import3种方式之一
+// 他可以得到BeanDefinitionRegistry,故而可以动态的添加bd,改变bd,经典的场景就是mybatis的,MapperScan()
+// @Retention(RetentionPolicy.RUNTIME)
+
+/**
+ *  @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER })
+ *  @Import(MyImportBeanDefinitionRegistrar.class)
+ *  public @interface SnakeMapperScan {
+ *  }
+ */
 public interface ImportBeanDefinitionRegistrar {
 
 	/**
@@ -56,8 +66,9 @@ public interface ImportBeanDefinitionRegistrar {
 	 * <p>Note that {@link BeanDefinitionRegistryPostProcessor} types may <em>not</em> be
 	 * registered here, due to lifecycle constraints related to {@code @Configuration}
 	 * class processing.
+	 *
 	 * @param importingClassMetadata annotation metadata of the importing class
-	 * @param registry current bean definition registry
+	 * @param registry               current bean definition registry
 	 */
 	void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry);
 

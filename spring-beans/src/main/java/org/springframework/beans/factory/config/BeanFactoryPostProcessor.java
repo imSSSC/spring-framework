@@ -45,7 +45,7 @@ import org.springframework.beans.BeansException;
 
 /**
  * spring beanFactory后置器 后置工厂处理器
- * 容器初始化之后修改他的工厂,让程序员干预bean工厂的初始化过程
+ * new bean之前,针对配置类加上cglib代理
  */
 @FunctionalInterface
 public interface BeanFactoryPostProcessor {
