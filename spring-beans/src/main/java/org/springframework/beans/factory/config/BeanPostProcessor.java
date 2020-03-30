@@ -67,7 +67,7 @@ import org.springframework.lang.Nullable;
 /**
  * spring bean 后置器,能够让程序员插手bean实例化
  * 后置bean处理器
- * 类似于 @PostConstruct
+ * 应用场景: @PostConstruct , aop
  */
 public interface BeanPostProcessor {
 

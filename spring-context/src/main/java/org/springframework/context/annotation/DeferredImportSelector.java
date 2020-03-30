@@ -35,6 +35,7 @@ import org.springframework.lang.Nullable;
  * @author Stephane Nicoll
  * @since 4.0
  */
+// 延迟加载
 public interface DeferredImportSelector extends ImportSelector {
 
 	/**
