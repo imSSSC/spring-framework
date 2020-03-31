@@ -69,10 +69,17 @@ final class PostProcessorRegistrationDelegate {
 					BeanDefinitionRegistryPostProcessor registryProcessor =
 							(BeanDefinitionRegistryPostProcessor) postProcessor;
 					// 调用扩展方法postProcessBeanDefinitionRegistry
+					// 如果是程序员指定的,这里会直接执行
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
+					// 执行之后放到registryProcessor
+					// 这个集合 1. 全部的BeanDefinitionRegistryPP
+					// 2. 也全部是BeanFactoryPP
+					// 当spring执行 BeanFactoryPP的时候只需要遍历这个list
 					registryProcessors.add(registryProcessor);
 				}
 				else {
+					// 如果不属于BeanDefinitionRegistryPostProcessor
+					// 则属于 BeanFactoryPostProcessor
 					regularPostProcessors.add(postProcessor);
 				}
 			}
@@ -126,6 +133,7 @@ final class PostProcessorRegistrationDelegate {
 			currentRegistryProcessors.clear();
 
 			// Finally, invoke all other BeanDefinitionRegistryPostProcessors until no further ones appear.
+			// 这个循环是执行剩下的postProcessor
 			boolean reiterate = true;
 			while (reiterate) {
 				reiterate = false;
@@ -134,6 +142,7 @@ final class PostProcessorRegistrationDelegate {
 					if (!processedBeans.contains(ppName)) {
 						currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
 						processedBeans.add(ppName);
+						// 这里的true的原因是, postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) 可能注册了其他的postProcess
 						reiterate = true;
 					}
 				}
@@ -145,19 +154,23 @@ final class PostProcessorRegistrationDelegate {
 
 			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
 			// 执行BeanFactoryPostProcessor的回调,前面不是吗?
-			// 前面执行的BeanFactoryPostProcessor的子类BeanDefinitionRegistryPostProcessor的回调
-			// 这里执行的是BeanFactoryPostProcessor
+			// 1. 这里执行完所以的BeanFactoryPostProcessor的子类BeanDefinitionRegistryPostProcessor
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
 
-			// 执行自定义的BeanFactoryPostProcessor
+			// 执行所有的BeanFactoryPostProcessor-------postProcessBeanFactory---自己的方法
+			// 2. 执行所有父类BeanFactoryPostProcessor是程序员传的---通过api传的--重点
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
 		}
 
 		else {
 			// Invoke factory processors registered with the context instance.
+			// 3. 执行程序员自己put进来的 BeanFactoryPP
 			invokeBeanFactoryPostProcessors(beanFactoryPostProcessors, beanFactory);
 		}
 
+
+		// 4. 找出程序员提供的BeanFactoryPostProcessor, 通过注解提供的
+		// 因为上面通过执行子类已经扫描出来了程序员提供的--不是通过api提供的
 		// Do not initialize FactoryBeans here: We need to leave all regular beans
 		// uninitialized to let the bean factory post-processors apply to them!
 		// ConfigurationClassPostProcessor
