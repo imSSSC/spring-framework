@@ -173,6 +173,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @param allowEarlyReference whether early references should be created or not
 	 * @return the registered singleton object, or {@code null} if none found
 	 */
+	// 解决循环依赖
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 
@@ -186,7 +187,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
 					if (singletonFactory != null) {
 						singletonObject = singletonFactory.getObject();
+						// 放到3级缓存
 						this.earlySingletonObjects.put(beanName, singletonObject);
+						// 从2级缓存清除,(因为2级是工厂---作用生成对象 工厂生成代价比较大。以后可以从3级缓存直接拿对象。)
 						this.singletonFactories.remove(beanName);
 					}
 				}
