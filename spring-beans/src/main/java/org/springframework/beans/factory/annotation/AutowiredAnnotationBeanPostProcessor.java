@@ -133,6 +133,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 
 	private final Set<String> lookupMethodsChecked = Collections.newSetFromMap(new ConcurrentHashMap<>(256));
 
+	// 已经被推断完成的类和该类被推断出来的构造方法集合
 	private final Map<Class<?>, Constructor<?>[]> candidateConstructorsCache = new ConcurrentHashMap<>(256);
 
 	private final Map<String, InjectionMetadata> injectionMetadataCache = new ConcurrentHashMap<>(256);
@@ -264,6 +265,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 		}
 
 		// Quick check on the concurrent map first, with minimal locking.
+		// getBean的时候会从缓存中获取,但是单例和原型的一开始加载的时候其实不会走这里。
 		Constructor<?>[] candidateConstructors = this.candidateConstructorsCache.get(beanClass);
 		if (candidateConstructors == null) {
 			// Fully synchronized resolution now...
@@ -280,8 +282,11 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 								"] from ClassLoader [" + beanClass.getClassLoader() + "] failed", ex);
 					}
 					List<Constructor<?>> candidates = new ArrayList<>(rawCandidates.length);
+					// 是否是必要的 @Autowired
 					Constructor<?> requiredConstructor = null;
+					// 默认的
 					Constructor<?> defaultConstructor = null;
+					// 把推断主要的构造方法委托给 kotlin ,如果是java类 不可能为primary,永远为null
 					Constructor<?> primaryConstructor = BeanUtils.findPrimaryConstructor(beanClass);
 					int nonSyntheticConstructors = 0;
 					for (Constructor<?> candidate : rawCandidates) {
@@ -292,8 +297,10 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 							continue;
 						}
 						AnnotationAttributes ann = findAutowiredAnnotation(candidate);
+						// 判断没有注解的
 						if (ann == null) {
 							Class<?> userClass = ClassUtils.getUserClass(beanClass);
+							// 判断内部类,一般不会有内部类
 							if (userClass != beanClass) {
 								try {
 									Constructor<?> superCtor =
@@ -305,13 +312,26 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 								}
 							}
 						}
+						// 判断有注解的
 						if (ann != null) {
+							// 有多个注解报错
 							if (requiredConstructor != null) {
 								throw new BeanCreationException(beanName,
 										"Invalid autowire-marked constructor: " + candidate +
 										". Found constructor with 'required' Autowired annotation already: " +
 										requiredConstructor);
 							}
+							// 推断构造方法---和注入模型有关
+							/**
+							 * 手动装配
+							 * 你提供了两个合格 ==== 异常
+							 * 你提供了多个模糊构造方法----0个构造方法---默认的去实例化对象
+							 * 你提供了一个构造方法----不是默认的----就会推断出来
+							 */
+							/**
+							 * 自动装配
+							 * 全部拿出来
+							 */
 							boolean required = determineRequiredStatus(ann);
 							if (required) {
 								if (!candidates.isEmpty()) {
@@ -324,6 +344,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 							}
 							candidates.add(candidate);
 						}
+						// 判断参数
 						else if (candidate.getParameterCount() == 0) {
 							defaultConstructor = candidate;
 						}
