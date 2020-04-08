@@ -9,23 +9,30 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class UserService {
-	public UserService() {
-		System.out.println("---default");
-	}
-
-	public UserService(A a) {
-		System.out.println(a);
-		System.out.println("---a---");
-	}
-	@Autowired(required = false)
-	public UserService(B b) {
-		System.out.println(b);
-		System.out.println("---b---");
-	}
-
-	@Autowired(required = false)
-	public UserService(A a, B b) {
-		System.out.println(a + " " + b);
-		System.out.println("---ab---");
-	}
+//	public UserService() {
+//		System.out.println("---default");
+//	}
+//
+//	public UserService(A a) {
+//		System.out.println(a);
+//		System.out.println("---a---");
+//	}
+//	@Autowired(required = false)
+//	public UserService(B b) {
+//		System.out.println(b);
+//		System.out.println("---b---");
+//	}
+//
+//	@Autowired(required = false)
+//	public UserService(A a, B b) {
+//		System.out.println(a + " " + b);
+//		System.out.println("---ab---");
+//	}
+//
+//	A a;
+//
+//	public void setA(A a) {
+//		this.a = a;
+//		System.out.println("-------");
+//	}
 }
