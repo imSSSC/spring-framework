@@ -116,7 +116,7 @@ class ConstructorResolver {
 
 		// 最后被确定出来使用的构造方法
 		Constructor<?> constructorToUse = null;
-		// 最后使用的参数
+		// 最后使用的参数值的列表
 		ArgumentsHolder argsHolderToUse = null;
 		// 最终确定的的参数
 		Object[] argsToUse = null;
@@ -143,8 +143,8 @@ class ConstructorResolver {
 			}
 		}
 
-		// spring5.1 上面还有一些代码. 我们这里是spring5.0 没有
-
+		// spring5.1 这里还有一些代码. 我们这里是spring5.0 没有
+		// 一般来说单例这里是不会被调用到,原型会被调用
 		if (constructorToUse == null) {
 			// Need to resolve the constructor.
 			// 通过构造方法自动注入
@@ -152,7 +152,7 @@ class ConstructorResolver {
 					mbd.getResolvedAutowireMode() == AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR);
 			ConstructorArgumentValues resolvedValues = null;
 
-			// 表示我在实例化spring的时候找到的那个构造方法的参数,最少需要多少
+			// 表示我在实例化spring的时候找到的那个构造方法的参数列表的最小长度
 			int minNrOfArgs;
 			if (explicitArgs != null) {
 				minNrOfArgs = explicitArgs.length;
@@ -164,6 +164,7 @@ class ConstructorResolver {
 			}
 
 			// Take specified constructors, if any.
+			// spring 5.1 这行代码在上面那一块
 			Constructor<?>[] candidates = chosenCtors;
 			if (candidates == null) {
 				Class<?> beanClass = mbd.getBeanClass();
@@ -177,9 +178,11 @@ class ConstructorResolver {
 							"] from ClassLoader [" + beanClass.getClassLoader() + "] failed", ex);
 				}
 			}
+
 			// 排序,1.修饰符 public > ... >private 2.参数多的靠前
 			AutowireUtils.sortConstructors(candidates);
 			int minTypeDiffWeight = Integer.MAX_VALUE;
+			// 宽松的构造集合
 			Set<Constructor<?>> ambiguousConstructors = null;
 			LinkedList<UnsatisfiedDependencyException> causes = null;
 
@@ -228,9 +231,11 @@ class ConstructorResolver {
 					argsHolder = new ArgumentsHolder(explicitArgs);
 				}
 
+				// 获取值
 				int typeDiffWeight = (mbd.isLenientConstructorResolution() ?
 						argsHolder.getTypeDifferenceWeight(paramTypes) : argsHolder.getAssignabilityWeight(paramTypes));
 				// Choose this constructor if it represents the closest match.
+				// 比较差值
 				if (typeDiffWeight < minTypeDiffWeight) {
 					constructorToUse = candidate;
 					argsHolderToUse = argsHolder;

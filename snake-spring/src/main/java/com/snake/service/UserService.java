@@ -17,13 +17,13 @@ public class UserService {
 		System.out.println(a);
 		System.out.println("---a---");
 	}
-
+	@Autowired(required = false)
 	public UserService(B b) {
 		System.out.println(b);
 		System.out.println("---b---");
 	}
 
-//	@Autowired
+	@Autowired(required = false)
 	public UserService(A a, B b) {
 		System.out.println(a + " " + b);
 		System.out.println("---ab---");

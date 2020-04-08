@@ -43,8 +43,10 @@ import org.springframework.util.ObjectUtils;
  */
 public class ConstructorArgumentValues {
 
+	// 有序
 	private final Map<Integer, ValueHolder> indexedArgumentValues = new LinkedHashMap<>();
 
+	// 无序
 	private final List<ValueHolder> genericArgumentValues = new ArrayList<>();
 
 
