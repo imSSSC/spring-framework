@@ -114,14 +114,19 @@ class ConstructorResolver {
 		BeanWrapperImpl bw = new BeanWrapperImpl();
 		this.beanFactory.initBeanWrapper(bw);
 
+		// 最后被确定出来使用的构造方法
 		Constructor<?> constructorToUse = null;
+		// 最后使用的参数
 		ArgumentsHolder argsHolderToUse = null;
+		// 最终确定的的参数
 		Object[] argsToUse = null;
 
+		// 一般来说都为null
 		if (explicitArgs != null) {
 			argsToUse = explicitArgs;
 		}
 		else {
+			// spring找出来的参数,但是不是spring最终要使用的参数
 			Object[] argsToResolve = null;
 			synchronized (mbd.constructorArgumentLock) {
 				constructorToUse = (Constructor<?>) mbd.resolvedConstructorOrFactoryMethod;
@@ -138,12 +143,16 @@ class ConstructorResolver {
 			}
 		}
 
+		// spring5.1 上面还有一些代码. 我们这里是spring5.0 没有
+
 		if (constructorToUse == null) {
 			// Need to resolve the constructor.
+			// 通过构造方法自动注入
 			boolean autowiring = (chosenCtors != null ||
 					mbd.getResolvedAutowireMode() == AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR);
 			ConstructorArgumentValues resolvedValues = null;
 
+			// 表示我在实例化spring的时候找到的那个构造方法的参数,最少需要多少
 			int minNrOfArgs;
 			if (explicitArgs != null) {
 				minNrOfArgs = explicitArgs.length;
@@ -168,6 +177,7 @@ class ConstructorResolver {
 							"] from ClassLoader [" + beanClass.getClassLoader() + "] failed", ex);
 				}
 			}
+			// 排序,1.修饰符 public > ... >private 2.参数多的靠前
 			AutowireUtils.sortConstructors(candidates);
 			int minTypeDiffWeight = Integer.MAX_VALUE;
 			Set<Constructor<?>> ambiguousConstructors = null;

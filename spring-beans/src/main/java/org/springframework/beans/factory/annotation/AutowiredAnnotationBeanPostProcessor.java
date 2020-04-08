@@ -265,7 +265,6 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 		}
 
 		// Quick check on the concurrent map first, with minimal locking.
-		// getBean的时候会从缓存中获取,但是单例和原型的一开始加载的时候其实不会走这里。
 		Constructor<?>[] candidateConstructors = this.candidateConstructorsCache.get(beanClass);
 		if (candidateConstructors == null) {
 			// Fully synchronized resolution now...
@@ -324,13 +323,15 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 							// 推断构造方法---和注入模型有关
 							/**
 							 * 手动装配
-							 * 你提供了两个合格 ==== 异常
-							 * 你提供了多个模糊构造方法----0个构造方法---默认的去实例化对象
-							 * 你提供了一个构造方法----不是默认的----就会推断出来
+							 * 没有提供构造方法---------------可用的构造方法为null
+							 * 你提供了一个默认的构造方法---可用的构造方法为null
+							 * 你提供了一个构造方法不是默认的----就会推断出来
+							 * 你提供了多个模糊构造方法-----可用的构造方法为null
+							 * 你提供了多个@Autowire (required 都为 true) ---------------异常
 							 */
 							/**
 							 * 自动装配
-							 * 全部拿出来
+							 * 通过构造方法自动
 							 */
 							boolean required = determineRequiredStatus(ann);
 							if (required) {

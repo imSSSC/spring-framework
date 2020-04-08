@@ -23,6 +23,7 @@ public class UserService {
 		System.out.println("---b---");
 	}
 
+//	@Autowired
 	public UserService(A a, B b) {
 		System.out.println(a + " " + b);
 		System.out.println("---ab---");
