@@ -539,7 +539,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			// 实例化对象,里面第二次调用后置处理器
 			instanceWrapper = createBeanInstance(beanName, mbd, args);
 		}
+		// 得到实例化出来的对象
 		final Object bean = instanceWrapper.getWrappedInstance();
+
+
 		Class<?> beanType = instanceWrapper.getWrappedClass();
 		if (beanType != NullBean.class) {
 			mbd.resolvedTargetType = beanType;
@@ -550,6 +553,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (!mbd.postProcessed) {
 				try {
 					// 第三次调用后置处理器
+					// 通过后置处理器来 应用合并之后的bd
+					// 缓存了注入元素的信息
 					applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
 				}
 				catch (Throwable ex) {

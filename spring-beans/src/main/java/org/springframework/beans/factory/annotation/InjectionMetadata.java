@@ -51,6 +51,7 @@ public class InjectionMetadata {
 
 	private final Class<?> targetClass;
 
+	// 需要注入的元素集合
 	private final Collection<InjectedElement> injectedElements;
 
 	@Nullable
