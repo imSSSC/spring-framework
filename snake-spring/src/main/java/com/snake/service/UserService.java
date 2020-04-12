@@ -3,6 +3,8 @@ package com.snake.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 /**
  * @author snake
  * @date 2020/4/6 21:44.
@@ -35,4 +37,18 @@ public class UserService {
 //		this.a = a;
 //		System.out.println("-------");
 //	}
+//
+//	@Autowired
+//	public void setA(A a) {
+//		this.a = a;
+//		System.out.println("-------");
+//	}
+
+	@Autowired
+	I y;
+
+	@PostConstruct
+	public void ss(){
+		System.out.println(y);
+	}
 }
