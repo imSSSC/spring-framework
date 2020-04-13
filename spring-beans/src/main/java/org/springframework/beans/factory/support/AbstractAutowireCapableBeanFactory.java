@@ -483,7 +483,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		try {
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
-			// 第一次调用后置处理器----aop
+			// 第一次调用后置处理器----判断正在实列化的bean是否需要被代理
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			if (bean != null) {
 				return bean;
@@ -536,7 +536,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
 		}
 		if (instanceWrapper == null) {
-			// 实例化对象,里面第二次调用后置处理器
+			// 第二次调用后置处理器 推断创建这个bean的构造方法
 			instanceWrapper = createBeanInstance(beanName, mbd, args);
 		}
 		// 得到实例化出来的对象
@@ -552,7 +552,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		synchronized (mbd.postProcessingLock) {
 			if (!mbd.postProcessed) {
 				try {
-					// 第三次调用后置处理器
+					// 第三次调用后置处理器 合并BeanDefinition
 					// 通过后置处理器来 应用合并之后的bd
 					// 缓存了注入元素的信息
 					applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
@@ -575,7 +575,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				logger.debug("Eagerly caching bean '" + beanName +
 						"' to allow for resolving potential circular references");
 			}
-			// 第四次调用后置处理器,判断是否需要aop
+			// 第四次调用后置处理器,循环依赖，暴露一个工厂，用这个工厂去获取bean的实例
 			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 
@@ -584,6 +584,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		try {
 			// 填充属性,也是就是我们常常说的自动注入
 			// 里面会完成第五次和第六次后置处理器的调用
+			// 第五次 属性注入，判断这个BeanDefinition 是否允许属性注入
+			// 第六次 执行属性注入 @Autowired和@Resource
 			populateBean(beanName, mbd, instanceWrapper);
 			// 初始化spring
 			// 里面会进行第七次和第八次后置处理器的调用
@@ -1428,6 +1430,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		Set<String> autowiredBeanNames = new LinkedHashSet<>(4);
+		// find  from cache --- null --- find put cache
 		String[] propertyNames = unsatisfiedNonSimpleProperties(mbd, bw);
 		for (String propertyName : propertyNames) {
 			try {
@@ -1472,8 +1475,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	protected String[] unsatisfiedNonSimpleProperties(AbstractBeanDefinition mbd, BeanWrapper bw) {
 		Set<String> result = new TreeSet<>();
 		PropertyValues pvs = mbd.getPropertyValues();
+		// 通过内省获取class里面所有的操作函数 get set is 函数
 		PropertyDescriptor[] pds = bw.getPropertyDescriptors();
 		for (PropertyDescriptor pd : pds) {
+			// getWriteMethod() 过滤出set方法
 			if (pd.getWriteMethod() != null && !isExcludedFromDependencyCheck(pd) && !pvs.contains(pd.getName()) &&
 					!BeanUtils.isSimpleProperty(pd.getPropertyType())) {
 				result.add(pd.getName());
