@@ -279,6 +279,10 @@ public class DispatcherServlet extends FrameworkServlet {
 		// Load default strategy implementations from properties file.
 		// This is currently strictly internal and not meant to be customized
 		// by application developers.
+		// 从属性文件加载默认策略实现
+		// 就是从属性文件 DEFAULT_STRATEGIES_PATH = DispatcherServlet.properties
+		// 拿出所有的配置一共8个
+		// 目前，这严格是内部的，并不打算由应用程序开发人员自定义。
 		try {
 			ClassPathResource resource = new ClassPathResource(DEFAULT_STRATEGIES_PATH, DispatcherServlet.class);
 			defaultStrategies = PropertiesLoaderUtils.loadProperties(resource);
@@ -487,6 +491,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	@Override
 	protected void onRefresh(ApplicationContext context) {
+		// 初始化策略
 		initStrategies(context);
 	}
 
@@ -495,15 +500,15 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
 	 */
 	protected void initStrategies(ApplicationContext context) {
-		initMultipartResolver(context);
-		initLocaleResolver(context);
-		initThemeResolver(context);
-		initHandlerMappings(context);
-		initHandlerAdapters(context);
-		initHandlerExceptionResolvers(context);
-		initRequestToViewNameTranslator(context);
-		initViewResolvers(context);
-		initFlashMapManager(context);
+		initMultipartResolver(context);// 上传文件解析器
+		initLocaleResolver(context);   // 国际化解析器
+		initThemeResolver(context);    // 前端主题解析器
+		initHandlerMappings(context);  // 处理器映射器
+		initHandlerAdapters(context);  // 处理器适配器
+		initHandlerExceptionResolvers(context); // 处理器异常解析器
+		initRequestToViewNameTranslator(context); //
+		initViewResolvers(context);    // 视图解析器
+		initFlashMapManager(context);  // 重定向数据管理器
 	}
 
 	/**
@@ -602,6 +607,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 		// Ensure we have at least one HandlerMapping, by registering
 		// a default HandlerMapping if no other mappings are found.
+		// 通过配置文件中的配置信息得到handlerMapping
 		if (this.handlerMappings == null) {
 			this.handlerMappings = getDefaultStrategies(context, HandlerMapping.class);
 			if (logger.isDebugEnabled()) {
@@ -948,6 +954,8 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpServletRequest processedRequest = request;
+		// 不同的处理器映射器对应不同的HandlerExecutionChain
+		// HandlerExecutionChain作用: 可以getHandler 获取处理器
 		HandlerExecutionChain mappedHandler = null;
 		boolean multipartRequestParsed = false;
 
@@ -964,8 +972,11 @@ public class DispatcherServlet extends FrameworkServlet {
 				multipartRequestParsed = (processedRequest != request);
 
 				// Determine handler for the current request.
-				// 确定当前请求的处理程序
+				// """""获取 处理器映射器<HandlerMapping>"""""
 				// 推断controller是什么类型(controller有三种类型)
+				// 推断是哪种handler(有两种)
+				// beanName 对应  BeanNameUrlHandlerMapping
+				// method   对应  RequestMappingInfoHandlerMapping
 				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null) {
 					noHandlerFound(processedRequest, response);
@@ -973,9 +984,14 @@ public class DispatcherServlet extends FrameworkServlet {
 				}
 
 				// Determine handler adapter for the current request.
+				// """""获得 处理器适配器<HandlerAdapter>"""""
+				// 如果HandlerExecutionChain是method,    返回HandlerAdapter是类  RequestMappingHandlerAdapter
+				// 如果HandlerExecutionChain是beanName && Controller接口,  返回HandlerAdapter是类  SimpleControllerHandlerAdapter
+				// 如果HandlerExecutionChain是beanName && HttpRequestHandler接口,  返回HandlerAdapter是类  HttpRequestHandlerAdapter
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
 				// Process last-modified header, if supported by the handler.
+				// 获取请求类型 GET POST...
 				String method = request.getMethod();
 				boolean isGet = "GET".equals(method);
 				if (isGet || "HEAD".equals(method)) {
@@ -988,11 +1004,16 @@ public class DispatcherServlet extends FrameworkServlet {
 					}
 				}
 
+				// 前置拦截处理器
 				if (!mappedHandler.applyPreHandle(processedRequest, response)) {
 					return;
 				}
 
 				// Actually invoke the handler.
+				// 调用处理器, 返回modelAndView
+				// 如果适配器是RequestMappingHandlerAdapter,则用 AbstractHandlerMethodAdapter.handle 反射调用
+				// 如果适配器是SimpleControllerHandlerAdapter,   则用 SimpleControllerHandlerAdapter.handle 反射调用
+				// 如果适配器是HttpRequestHandlerAdapter,   则用 HttpRequestHandlerAdapter.handle 反射调用
 				mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
 
 				if (asyncManager.isConcurrentHandlingStarted()) {
@@ -1231,6 +1252,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				if (logger.isTraceEnabled()) {
 					logger.trace("Testing handler adapter [" + ha + "]");
 				}
+				// 判断是哪种解析器
 				if (ha.supports(handler)) {
 					return ha;
 				}
