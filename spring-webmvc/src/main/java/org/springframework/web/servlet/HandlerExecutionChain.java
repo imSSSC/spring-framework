@@ -36,6 +36,7 @@ import org.springframework.util.ObjectUtils;
  * @since 20.06.2003
  * @see HandlerInterceptor
  */
+// HandlerExecutionChain 只能通过HandlerMapping中的getHandler获取
 public class HandlerExecutionChain {
 
 	private static final Log logger = LogFactory.getLog(HandlerExecutionChain.class);

@@ -13,10 +13,10 @@ import java.io.IOException;
  * @author snake
  * @date 2020/4/22 00:14
  */
-@RequestMapping("index3")
+@Component("/index3")
 public class IndexController3 implements HttpRequestHandler {
 	@Override
 	public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("-----------");
+		System.out.println("-----index3------");
 	}
 }

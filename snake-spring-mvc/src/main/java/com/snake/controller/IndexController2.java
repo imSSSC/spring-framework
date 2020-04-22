@@ -1,27 +1,22 @@
 package com.snake.controller;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author snake
- * @date 2020/4/22 00:23
+ * @date 2020/4/22 00:19
  */
-@Controller
-@RequestMapping("index2")
-public class IndexController2 {
-	@ResponseBody
-	@RequestMapping("index2")
-	public String index2(){
-		System.out.println("--------index2-----");
-		return "index2";
-	}
-
-	@ResponseBody
-	@RequestMapping("index22")
-	public String index22(){
-		System.out.println("--------index22-----");
-		return "index22";
+@Component("/index2")
+public class IndexController2 implements Controller {
+	@Override
+	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("---index2--------");
+		return null;
 	}
 }

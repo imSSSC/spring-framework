@@ -32,10 +32,12 @@ public class SnakeSpringApplication {
 		 * 参数一: tomcat的访问路径
 		 * 参数二: 项目的web的目录
 		 */
-//		tomcat.addWebapp()
-		// 设置tomcat环境
+//		tomcat.addWebapp("",new File("/src/main/resources").getAbsolutePath())
+		// 设置tomcat的路径
 		File base = new File(System.getProperty("java.io.tmpdir"));
 		Context tomcatContext = tomcat.addContext("/", base.getAbsolutePath());
+
+		// 初始化controller和请求映射
 		Tomcat.addServlet(tomcatContext,"snake",dispatcherServlet).setLoadOnStartup(1);
 
 		// spring web环境 需要执行的servletName
