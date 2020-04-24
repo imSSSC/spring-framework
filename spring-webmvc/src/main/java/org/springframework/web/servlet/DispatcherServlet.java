@@ -1005,7 +1005,7 @@ public class DispatcherServlet extends FrameworkServlet {
 					}
 				}
 
-				// 前置拦截处理器
+				// 前置拦截处理器,调用 Controller 方法之前执行。
 				// 处理 interceptors 拦截器
 				if (!mappedHandler.applyPreHandle(processedRequest, response)) {
 					return;
@@ -1025,6 +1025,8 @@ public class DispatcherServlet extends FrameworkServlet {
 				}
 
 				applyDefaultViewName(processedRequest, mv);
+
+				// 后置拦截处理器,调用 Controller 方法之后执行。
 				mappedHandler.applyPostHandle(processedRequest, response, mv);
 			}
 			catch (Exception ex) {
@@ -1035,12 +1037,15 @@ public class DispatcherServlet extends FrameworkServlet {
 				// making them available for @ExceptionHandler methods and other scenarios.
 				dispatchException = new NestedServletException("Handler dispatch failed", err);
 			}
+			// 执行方法afterCompletion 拦截器, 处理完 Controller 方法返回结果之后执行
 			processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
 		}
 		catch (Exception ex) {
+			// 执行方法afterCompletion 拦截器, 处理完 Controller 方法返回结果之后执行
 			triggerAfterCompletion(processedRequest, response, mappedHandler, ex);
 		}
 		catch (Throwable err) {
+			// 执行方法afterCompletion 拦截器, 处理完 Controller 方法返回结果之后执行
 			triggerAfterCompletion(processedRequest, response, mappedHandler,
 					new NestedServletException("Handler processing failed", err));
 		}
