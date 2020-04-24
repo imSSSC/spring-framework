@@ -31,8 +31,8 @@ public class UserService {
 //		System.out.println("---ab---");
 //	}
 //
-	@Autowired
-	A a;
+//	@Autowired
+//	A a;
 
 //	public void setA(A a) {
 //		this.a = a;
@@ -40,11 +40,10 @@ public class UserService {
 //	}
 //
 //	@Autowired
-//	public void setA(A a) {
-//		this.a = a;
-//		System.out.println(a);
-//		System.out.println("-------");
-//	}
+	public void setA(A a) {
+		System.out.println(a);
+		System.out.println("-------");
+	}
 
 //	@Autowired
 //	I y;

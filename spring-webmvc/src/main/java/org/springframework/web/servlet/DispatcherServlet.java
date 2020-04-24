@@ -585,6 +585,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	private void initHandlerMappings(ApplicationContext context) {
 		this.handlerMappings = null;
 
+		// 从spring容器拿 handlerMapping
 		if (this.detectAllHandlerMappings) {
 			// Find all HandlerMappings in the ApplicationContext, including ancestor contexts.
 			Map<String, HandlerMapping> matchingBeans =
@@ -607,7 +608,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 		// Ensure we have at least one HandlerMapping, by registering
 		// a default HandlerMapping if no other mappings are found.
-		// 通过配置文件中的配置信息得到handlerMapping
+		// 如果spring容器没有得到mapping ,会再通过配置文件中的配置信息得到handlerMapping
 		if (this.handlerMappings == null) {
 			this.handlerMappings = getDefaultStrategies(context, HandlerMapping.class);
 			if (logger.isDebugEnabled()) {
@@ -972,11 +973,11 @@ public class DispatcherServlet extends FrameworkServlet {
 				multipartRequestParsed = (processedRequest != request);
 
 				// Determine handler for the current request.
+				// 1. 推断controller是什么类型(controller有三种类型)
 				// """""获取 处理器映射器<HandlerMapping>"""""
-				// 推断controller是什么类型(controller有三种类型)
-				// 推断是哪种handler(有两种)
-				// beanName 对应  BeanNameUrlHandlerMapping
+				// 2. 推断是哪种默认handler(有两种) <spring boot 对处理器映射器有扩展>
 				// method   对应  RequestMappingInfoHandlerMapping
+				// beanName 对应  BeanNameUrlHandlerMapping
 				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null) {
 					noHandlerFound(processedRequest, response);
@@ -1005,6 +1006,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				}
 
 				// 前置拦截处理器
+				// 处理 interceptors 拦截器
 				if (!mappedHandler.applyPreHandle(processedRequest, response)) {
 					return;
 				}
@@ -1014,6 +1016,8 @@ public class DispatcherServlet extends FrameworkServlet {
 				// 如果适配器是RequestMappingHandlerAdapter,则用 AbstractHandlerMethodAdapter.handle 反射调用
 				// 如果适配器是SimpleControllerHandlerAdapter,   则用 SimpleControllerHandlerAdapter.handle 反射调用
 				// 如果适配器是HttpRequestHandlerAdapter,   则用 HttpRequestHandlerAdapter.handle 反射调用
+
+				// 处理handler参数绑定 1. 注解方式解析 2.操作字节码技术
 				mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
 
 				if (asyncManager.isConcurrentHandlingStarted()) {
