@@ -14,17 +14,17 @@ import org.springframework.context.annotation.*;
 //@ImportResource("classpath:spring.xml")// 用于读取xml
 @Import(SnakeRegistrar.class)
 public class AppConfig {
-//
-//	@Bean
-//	public A getA(){
-//		System.out.println("--a--");
-//		getB();
-//		return new A();
-//	}
-//
-//	@Bean
-//	public B getB(){
-//		System.out.println("---b---");
-//		return new B();
-//	}
+
+	@Bean
+	public A getA(){
+		System.out.println("--a--");
+		getB();
+		return new A();
+	}
+
+	@Bean
+	public B getB(){
+		System.out.println("---b---");
+		return new B();
+	}
 }
