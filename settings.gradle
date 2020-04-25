@@ -31,4 +31,5 @@ rootProject.children.each {project ->
 }
 include 'snake-spring'
 include 'snake-spring-mvc'
+include 'snake-spring-event'
 

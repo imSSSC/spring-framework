@@ -25,6 +25,11 @@ import java.util.EventObject;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 在spring当中定义和应用程序上下文相关的时间需要
+ * 继承ApplicationEvent类
+ */
 public abstract class ApplicationEvent extends EventObject {
 
 	/** use serialVersionUID from Spring 1.2 for interoperability */
