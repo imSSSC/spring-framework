@@ -535,6 +535,10 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * @return whether the bean definition qualifies as a candidate component
 	 */
 	// 是否是符合条件的类
+	// isIndependent 是否是合成类
+	// isConcrete 是否是接口类和抽象类
+	// isAbstract 是否是抽象
+	// 是否加了LookUp注解
 	protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
 		AnnotationMetadata metadata = beanDefinition.getMetadata();
 		return (metadata.isIndependent() && (metadata.isConcrete() ||
