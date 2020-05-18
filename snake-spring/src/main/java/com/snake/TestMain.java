@@ -10,9 +10,14 @@ import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
  */
 public class TestMain {
 	public static void main(String[] args) {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+
+
+
 		context.register(AppConfig.class);
 		context.register(SnakeDao.class);
+		context.addBeanFactoryPostProcessor(new MyBeanDefinitionPostProcessor());
+		context.addBeanFactoryPostProcessor(new MyBeanFactoryProcessor());
 		// 初始化
 		context.refresh();
 //		System.out.println(context.getBean(SnakeDao.class));
