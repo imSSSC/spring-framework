@@ -89,16 +89,16 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 		 * 创建一个读取注解的Bean定义读取器
 		 * 什么是bean定义? BeanDefinition
 		 */
-		// 这里的AnnotatedBeanDefinitionReader主要读取spring的内部的bd 加了注解的@Configuration
+		// AnnotatedBeanDefinitionReader主要读取spring的内部的bd 加了注解的@Configuration
 
 		// 这里主要是注册内部的bd，比如唯一的beanFactoryPostProcess ConfigurationClassPostProcessor 和
-		// 他的几种 beanPostProcess。
+		// 其他的几种 beanPostProcess。
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 
 		// 读取扫描的bd,
 		// spring 提供api用来动态扫描注解
 		// 这里的scanner
-		// 1. 为了程序员能够在外部调用AnnotationConfigApplicationContext对象的scan
+		// 1. 为了程序员能够在外部继承AnnotationConfigApplicationContext对象的scan，可重写匹配规则。
 		// 2. spring内部也默认使用该scanner来扫描
 
 		// 这里主要是配置默认scanner规则，
@@ -208,7 +208,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * 但是注册注册之后需要手动调用refresh方法去触发容器解析注册
 	 *
 	 * 有两个意思
-	 * 他可以注册一个配置类
+	 * 他可以注册一个配置类，这是他主要的作用。
 	 * 他还可以单独注册一个bean
 	 */
 	public void register(Class<?>... annotatedClasses) {

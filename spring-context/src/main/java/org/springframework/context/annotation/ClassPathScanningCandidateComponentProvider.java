@@ -315,9 +315,11 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 */
 	public Set<BeanDefinition> findCandidateComponents(String basePackage) {
 		if (this.componentsIndex != null && indexSupportsIncludeFilters()) {
+			// 是否添加了索引，这里可以通过依赖spring索引，加快启动
 			return addCandidateComponentsFromIndex(this.componentsIndex, basePackage);
 		}
 		else {
+			// 这里是找到符合标准的bd
 			return scanCandidateComponents(basePackage);
 		}
 	}

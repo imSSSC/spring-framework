@@ -1,6 +1,8 @@
 package com.snake;
 
+import com.snake.service.CustomScanner;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 
 /**
  * @auther: snake
@@ -13,7 +15,11 @@ public class TestMain {
 		context.register(SnakeDao.class);
 		// 初始化
 		context.refresh();
-		System.out.println(context.getBean(SnakeDao.class));
+//		System.out.println(context.getBean(SnakeDao.class));
+//		CustomScanner classPathBeanDefinitionScanner = new CustomScanner(context);
+//		classPathBeanDefinitionScanner.addIncludeFilter((metadataReader, metadataReaderFactory) -> true);
+//		System.out.println(classPathBeanDefinitionScanner.scan("com.snake.service"));
+
 		context.close();
 	}
 }
