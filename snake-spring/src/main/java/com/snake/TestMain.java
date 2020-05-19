@@ -1,5 +1,7 @@
 package com.snake;
 
+import com.snake.dao.Dao1;
+import com.snake.service.B;
 import com.snake.service.CustomScanner;
 import com.snake.service.SnakeComponent;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -18,9 +20,13 @@ public class TestMain {
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 
-		context.register(AppConfig.class);
+		context.register(Dao1.class);
 
 		context.refresh();
+		for (String beanDefinitionName : context.getBeanDefinitionNames()) {
+			System.out.println(beanDefinitionName);
+		}
+		System.out.println(context.getBeanDefinition("dao1"));
 
 
 //		context.scan("com.snake.service");
