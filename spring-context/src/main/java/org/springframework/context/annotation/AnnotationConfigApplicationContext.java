@@ -91,18 +91,12 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 		 */
 		// AnnotatedBeanDefinitionReader主要读取spring的内部的bd 加了注解的@Configuration
 
-		// 这里主要是注册内部的bd，比如唯一的beanFactoryPostProcess ConfigurationClassPostProcessor 和
-		// 其他的几种 beanPostProcess。
+		// 这里主要是注册内部的bd，比如唯一的beanFactoryPostProcess ConfigurationClassPostProcessor和其他的几种 beanPostProcess。
+		// 同时也方便程序员外部调用 reader.register(),这里体现了spring的开闭原则
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 
-		// 读取扫描的bd,
-		// spring 提供api用来动态扫描注解
-		// 这里的scanner
-		// 1. 为了程序员能够在外部继承AnnotationConfigApplicationContext对象的scan，可重写匹配规则。
-		// 2. spring内部也默认使用该scanner来扫描
-
-		// 这里主要是配置默认scanner规则，
-		// 比如匹配规则 includeFilters： 匹配加了@Component注解
+		// 读取扫描的bd, spring 提供api用来动态扫描注解
+		// 这里是为了初始化Scanner，方便程序员外部调用修改匹配规则，体现了spring的开闭原则。
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 

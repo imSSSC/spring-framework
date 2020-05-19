@@ -12,13 +12,8 @@ public class CustomScanner extends ClassPathBeanDefinitionScanner {
 		super(registry);
 	}
 
-	@Override
-	public void addIncludeFilter(TypeFilter includeFilter) {
-		super.addIncludeFilter(includeFilter);
-	}
-
-	@Override
-	public void addExcludeFilter(TypeFilter excludeFilter) {
-		super.addExcludeFilter(excludeFilter);
-	}
+//	@Override
+//	public void addIncludeFilter(TypeFilter includeFilter) {
+//		super.addIncludeFilter(includeFilter);
+//	}
 }

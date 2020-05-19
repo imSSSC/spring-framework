@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-//@Component
+@SnakeComponent
 public class Service2 implements InitializingBean, DisposableBean {
 
 	@PostConstruct
