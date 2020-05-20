@@ -19,7 +19,8 @@ import java.util.Set;
 public class TestMain {
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-
+//		context.addBeanFactoryPostProcessor(new MyBeanDefinitionPostProcessor());
+//		context.addBeanFactoryPostProcessor(new MyBeanFactoryProcessor());
 		context.register(Dao1.class);
 
 		context.refresh();
