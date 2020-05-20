@@ -26,7 +26,7 @@ public class TestMain {
 		for (String beanDefinitionName : context.getBeanDefinitionNames()) {
 			System.out.println(beanDefinitionName);
 		}
-		System.out.println(context.getBeanDefinition("getB"));
+//		System.out.println(context.getBeanDefinition("getB"));
 
 
 //		context.scan("com.snake.service");
