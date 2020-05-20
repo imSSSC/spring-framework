@@ -219,6 +219,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				if (logger.isDebugEnabled()) {
 					logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
 				}
+				// 将bean放到 正在创建的set中
 				beforeSingletonCreation(beanName);
 				boolean newSingleton = false;
 				boolean recordSuppressedExceptions = (this.suppressedExceptions == null);
@@ -226,6 +227,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					this.suppressedExceptions = new LinkedHashSet<>();
 				}
 				try {
+					// 这里的singletonFactory是外面的lambda表达式，所以会延迟执行，这时候当前bean已经放到了正则创建set中
+					// lambda表达式里面做了很多事，其中就包括判断是否正在创建的bean，然后对改bean，暴露一个工厂。
 					singletonObject = singletonFactory.getObject();
 					newSingleton = true;
 				}
@@ -342,6 +345,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @see #isSingletonCurrentlyInCreation
 	 */
 	protected void beforeSingletonCreation(String beanName) {
+		// 前面判断是否正在创建bean， 如果不在走后面 add到正在创建集合中
 		if (!this.inCreationCheckExclusions.contains(beanName) && !this.singletonsCurrentlyInCreation.add(beanName)) {
 			throw new BeanCurrentlyInCreationException(beanName);
 		}

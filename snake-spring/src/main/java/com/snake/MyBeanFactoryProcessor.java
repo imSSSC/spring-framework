@@ -15,7 +15,8 @@ import org.springframework.stereotype.Component;
 public class MyBeanFactoryProcessor implements BeanFactoryPostProcessor {
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-		AnnotatedBeanDefinition beanDefinition = (AnnotatedBeanDefinition) beanFactory.getBeanDefinition("snakeDao");
-		beanDefinition.setScope("prototype");
+//		AnnotatedBeanDefinition beanDefinition = (AnnotatedBeanDefinition) beanFactory.getBeanDefinition("snakeDao");
+//		beanDefinition.setScope("prototype");
+		System.out.println("===============MyBeanFactoryProcessor postProcessBeanFactory");
 	}
 }

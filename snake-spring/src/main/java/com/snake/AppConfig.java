@@ -10,7 +10,7 @@ import org.springframework.context.annotation.*;
  * @date: 2020/3/18 00:00
  */
 @Configuration
-@ComponentScan("com.snake.service")
+@ComponentScan("com.snake.*")
 //@ImportResource("classpath:spring.xml")// 用于读取xml
 @Import(SnakeRegistrar.class)
 public class AppConfig {
