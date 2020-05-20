@@ -579,7 +579,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 						"' to allow for resolving potential circular references");
 			}
 			// 第四次调用后置处理器,循环依赖，暴露一个工厂，用这个工厂去获取bean的实例
-			// getSingleton()这个方法就要用到这工厂
+			// getSingleton()这个方法就要用到这工厂，也就是这段 lambda 表达式
 			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 
