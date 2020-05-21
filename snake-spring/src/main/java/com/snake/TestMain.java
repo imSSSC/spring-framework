@@ -22,6 +22,7 @@ public class TestMain {
 //		context.addBeanFactoryPostProcessor(new MyBeanDefinitionPostProcessor());
 //		context.addBeanFactoryPostProcessor(new MyBeanFactoryProcessor());
 		context.register(Dao1.class);
+//		context.register(MyBeanDefinitionPostProcessor.class);
 
 		context.refresh();
 		for (String beanDefinitionName : context.getBeanDefinitionNames()) {

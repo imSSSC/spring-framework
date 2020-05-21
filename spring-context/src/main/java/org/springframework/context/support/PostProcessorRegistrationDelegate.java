@@ -89,7 +89,7 @@ final class PostProcessorRegistrationDelegate {
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
 			// getBeanNamesForType 通过一个类型,可以得到一个bean的名字这里的type指的是bd当中描述当前类的class类型
 			// 这里只有个 org.springframework.context.annotation.internalConfigurationAnnotationProcessor
-			// 2. 获取spring内置的和程序员（注解）提供的---有特点的BeanDefinitionRegistryPostProcessor
+			// 2. 获取spring内置的和程序员（register）提供的---有特点的BeanDefinitionRegistryPostProcessor
 			String[] postProcessorNames =
 					beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
@@ -130,7 +130,7 @@ final class PostProcessorRegistrationDelegate {
 			currentRegistryProcessors.clear();
 
 			// Finally, invoke all other BeanDefinitionRegistryPostProcessors until no further ones appear.
-			// 3. 这个循环是获得剩下程序员（注解）提供的没有特点的BeanDefinitionRegistryPostProcessor
+			// 3. 这个循环是获得剩下程序员（register）提供的没有特点的BeanDefinitionRegistryPostProcessor
 			boolean reiterate = true;
 			while (reiterate) {
 				reiterate = false;
@@ -170,7 +170,7 @@ final class PostProcessorRegistrationDelegate {
 		// Do not initialize FactoryBeans here: We need to leave all regular beans
 		// uninitialized to let the bean factory post-processors apply to them!
 		// ConfigurationClassPostProcessor
-		// 2. 获取并执行程序员提供的---有特点的BeanFactoryPostProcessor
+		// 2. 获取并执行spring和程序员提供的---有特点的BeanFactoryPostProcessor
 		String[] postProcessorNames =
 				beanFactory.getBeanNamesForType(BeanFactoryPostProcessor.class, true, false);
 
@@ -207,7 +207,7 @@ final class PostProcessorRegistrationDelegate {
 		invokeBeanFactoryPostProcessors(orderedPostProcessors, beanFactory);
 
 		// Finally, invoke all other BeanFactoryPostProcessors.
-		// 3. 执行程序员没有特点的BeanFactoryPostProcessor
+		// 3. 执行程序员和spring提供 没有特点的BeanFactoryPostProcessor
 		List<BeanFactoryPostProcessor> nonOrderedPostProcessors = new ArrayList<>();
 		for (String postProcessorName : nonOrderedPostProcessorNames) {
 			nonOrderedPostProcessors.add(beanFactory.getBean(postProcessorName, BeanFactoryPostProcessor.class));
