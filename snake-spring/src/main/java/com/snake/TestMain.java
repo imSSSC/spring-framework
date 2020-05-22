@@ -21,7 +21,8 @@ public class TestMain {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 //		context.addBeanFactoryPostProcessor(new MyBeanDefinitionPostProcessor());
 //		context.addBeanFactoryPostProcessor(new MyBeanFactoryProcessor());
-		context.register(Dao1.class);
+//		context.register(Dao1.class);
+		context.register(AppConfig.class);
 //		context.register(MyBeanDefinitionPostProcessor.class);
 
 		context.refresh();

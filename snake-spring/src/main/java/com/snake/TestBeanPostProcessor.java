@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @auther: snake
  * @date: 2020/3/18 00:03
  */
-@Component
+//@Component
 public class TestBeanPostProcessor implements BeanPostProcessor, PriorityOrdered {
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {

@@ -246,11 +246,11 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		Object cacheKey = getCacheKey(beanClass, beanName);
 
 		if (!StringUtils.hasLength(beanName) || !this.targetSourcedBeans.contains(beanName)) {
-			// advisedBeans 存放的是不需要代理的对象
+			// advisedBeans 存放的是不需要代理的bean和 已经代理的bean
 			if (this.advisedBeans.containsKey(cacheKey)) {
 				return null;
 			}
-			// 类拿出来判断是否符合aspectJ的表达式,不符合就不用代理
+			// 1.判断是否是基础类，是基础类不能代理。 2. aspectJ类不能代理，其他类拿出来判断是否符合aspectJ的表达式,不符合就不用代理
 			if (isInfrastructureClass(beanClass) || shouldSkip(beanClass, beanName)) {
 				this.advisedBeans.put(cacheKey, Boolean.FALSE);
 				return null;
@@ -260,7 +260,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		// Create proxy here if we have a custom TargetSource.
 		// Suppresses unnecessary default instantiation of the target bean:
 		// The TargetSource will handle target instances in a custom fashion.
-		// 下面的不重要
+		// 创建实现自定义的代理
 		TargetSource targetSource = getCustomTargetSource(beanClass, beanName);
 		if (targetSource != null) {
 			if (StringUtils.hasLength(beanName)) {
