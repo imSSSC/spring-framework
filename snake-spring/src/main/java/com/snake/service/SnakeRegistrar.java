@@ -5,14 +5,15 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.stereotype.Component;
 
 public class SnakeRegistrar implements ImportBeanDefinitionRegistrar {
 	@Override
 	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
 
-		GenericBeanDefinition genericBeanDefinition = (GenericBeanDefinition) registry.getBeanDefinition("userService");
-		genericBeanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_NAME);
-		registry.registerBeanDefinition("userService",genericBeanDefinition);
+		GenericBeanDefinition genericBeanDefinition = (GenericBeanDefinition) registry.getBeanDefinition("order");
+		genericBeanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
+		registry.registerBeanDefinition("order",genericBeanDefinition);
 
 	}
 }

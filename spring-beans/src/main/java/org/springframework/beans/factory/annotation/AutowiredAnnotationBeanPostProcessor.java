@@ -233,6 +233,18 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 		metadata.checkConfigMembers(beanDefinition);
 	}
 
+	/**
+	 * 没有提供构造方法---------------ctors为null
+	 *
+	 * 你提供了一个默认的构造方法-------ctors为null
+	 * 你提供了一个构造方法不是默认的----ctors为该构造方法
+	 * 你提供了一个构造方法加了@Autowired----ctors为该构造方法
+	 *
+	 * 你提供了多个模糊构造方法---------ctors为null
+	 * 你提供了多个构造方法，但是只有一个加了@Autowired----ctors为加了@Autowired的构造方法
+	 * 你提供了多个构造函数，但是有多个@Autowired（required为false）-----ctors为多个加了@Autowired
+	 * 你提供了多个@Autowired (只要有一个required 都为 true)---------------异常
+	 */
 	@Override
 	@Nullable
 	public Constructor<?>[] determineCandidateConstructors(Class<?> beanClass, final String beanName)
@@ -295,6 +307,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 						else if (primaryConstructor != null) {
 							continue;
 						}
+						// 查找Autowired的注解的
 						AnnotationAttributes ann = findAutowiredAnnotation(candidate);
 						// 判断没有注解的
 						if (ann == null) {
@@ -313,26 +326,13 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 						}
 						// 判断有注解的
 						if (ann != null) {
-							// 有多个注解报错
+							// requiredConstructor！=null，说明有多个注解，有多个注解报错
 							if (requiredConstructor != null) {
 								throw new BeanCreationException(beanName,
 										"Invalid autowire-marked constructor: " + candidate +
 										". Found constructor with 'required' Autowired annotation already: " +
 										requiredConstructor);
 							}
-							// 推断构造方法---和注入模型有关
-							/**
-							 * 手动装配
-							 * 没有提供构造方法---------------可用的构造方法为null
-							 * 你提供了一个默认的构造方法---可用的构造方法为null
-							 * 你提供了一个构造方法不是默认的----就会推断出来
-							 * 你提供了多个模糊构造方法-----可用的构造方法为null
-							 * 你提供了多个@Autowire (required 都为 true) ---------------异常
-							 */
-							/**
-							 * 自动装配
-							 * 通过构造方法自动
-							 */
 							boolean required = determineRequiredStatus(ann);
 							if (required) {
 								if (!candidates.isEmpty()) {

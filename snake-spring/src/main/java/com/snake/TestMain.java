@@ -26,9 +26,9 @@ public class TestMain {
 //		context.register(MyBeanDefinitionPostProcessor.class);
 
 		context.refresh();
-		for (String beanDefinitionName : context.getBeanDefinitionNames()) {
-			System.out.println(beanDefinitionName);
-		}
+//		for (String beanDefinitionName : context.getBeanDefinitionNames()) {
+//			System.out.println(beanDefinitionName);
+//		}
 //		System.out.println(context.getBeanDefinition("getB"));
 
 

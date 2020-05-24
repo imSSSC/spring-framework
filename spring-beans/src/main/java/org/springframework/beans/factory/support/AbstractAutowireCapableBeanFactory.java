@@ -1150,15 +1150,28 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Candidate constructors for autowiring?
 		// 第二次调用后置处理器推断构造方法
 		// 获取有效的构造方法
+		/**
+		 * 没有提供构造方法---------------ctors为null
+		 *
+		 * 你提供了一个默认的构造方法-------ctors为null
+		 * 你提供了一个构造方法不是默认的----ctors为该构造方法
+		 * 你提供了一个构造方法加了@Autowired----ctors为该构造方法
+		 *
+		 * 你提供了多个模糊构造方法---------ctors为null
+		 * 你提供了多个构造方法，但是只有一个加了@Autowired----ctors为加了@Autowired的构造方法
+		 * 你提供了多个构造函数，但是有多个@Autowired（required为false）-----ctors为多个加了@Autowired
+		 * 你提供了多个@Autowired (只要有一个required 都为 true)---------------异常
+		 */
 		Constructor<?>[] ctors = determineConstructorsFromBeanPostProcessors(beanClass, beanName);
+		// ctors不为null  自动注入类型为：构造函数自动注入
 		if (ctors != null || mbd.getResolvedAutowireMode() == AUTOWIRE_CONSTRUCTOR ||
 				mbd.hasConstructorArgumentValues() || !ObjectUtils.isEmpty(args)) {
-			// 通过构造注入一个然后完成实例化对象
+			// 通过构造注入一个然后完成实例化bean
 			return autowireConstructor(beanName, mbd, ctors, args);
 		}
 
 		// No special handling: simply use no-arg constructor.
-		// 通过无参构造方法实例化对象
+		// 通过无参构造方法实例化bean
 		return instantiateBean(beanName, mbd);
 	}
 

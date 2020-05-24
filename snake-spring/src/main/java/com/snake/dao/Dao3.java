@@ -1,17 +1,11 @@
 package com.snake.dao;
 
-import com.snake.service.A;
-import com.snake.service.B;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 //@Component
 //@Configuration
 @Repository
-public class Dao1 {
+public class Dao3 {
 //	@Bean
 //	public B getB(){
 //		System.out.println("B init");
