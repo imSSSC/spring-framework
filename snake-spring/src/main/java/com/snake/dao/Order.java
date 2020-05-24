@@ -10,25 +10,27 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Order {
-//	public Order() {
+//		public Order() {
 //		System.out.println("default");
 //	}
-//
-//	public Order(Dao1 dao1) {
-//		System.out.println("dao1");
-//	}
-//
 
-		public Order(Dao1 dao1, Dao2 dao2) {
+	public Order(Dao1 dao1) {
+		System.out.println("dao1");
+	}
+
+	public Order(Dao1 dao1, Dao2 dao2) {
 		System.out.println("dao1 dao2");
 	}
+	public Order(Dao1 dao1, Dao3 dao3) {
+		System.out.println("dao1 dao3");
+	}
 
-	@Autowired(required = false)
-	public Order(Dao1 dao1, Dao2 dao2, Dao3 dao3) {
-		System.out.println("dao1 dao2 dao3");
-	}
-	@Autowired(required = false)
-	public Order() {
-		System.out.println("dao1 dao2 dao3");
-	}
+//	@Autowired(required = false)
+//	public Order(Dao1 dao1, Dao2 dao2, Dao3 dao3) {
+//		System.out.println("dao1 dao2 dao3");
+//	}
+//	@Autowired(required = false)
+//	public Order() {
+//		System.out.println("autowired null");
+//	}
 }

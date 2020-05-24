@@ -12,7 +12,7 @@ import org.springframework.context.annotation.*;
 @Configuration
 @ComponentScan("com.snake.dao")
 //@ImportResource("classpath:spring.xml")// 用于读取xml
-//@Import(SnakeRegistrar.class)
+@Import(SnakeRegistrar.class)
 public class AppConfig {
 
 //	@Bean

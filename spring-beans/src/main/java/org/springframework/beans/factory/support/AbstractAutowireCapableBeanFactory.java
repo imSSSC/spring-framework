@@ -1163,7 +1163,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		 * 你提供了多个@Autowired (只要有一个required 都为 true)---------------异常
 		 */
 		Constructor<?>[] ctors = determineConstructorsFromBeanPostProcessors(beanClass, beanName);
-		// ctors不为null  自动注入类型为：构造函数自动注入
+		// 1.ctors不为null
+		// 2.自动注入类型为：构造函数自动注入
+		// 3.是否有默认参数（xml 可以设置属性参数）
+		// 4.可以通过注册将参数进来
 		if (ctors != null || mbd.getResolvedAutowireMode() == AUTOWIRE_CONSTRUCTOR ||
 				mbd.hasConstructorArgumentValues() || !ObjectUtils.isEmpty(args)) {
 			// 通过构造注入一个然后完成实例化bean
