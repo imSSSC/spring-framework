@@ -1,9 +1,13 @@
 package com.snake;
 
+import com.snake.dao.ChildBean;
 import com.snake.dao.Dao1;
+import com.snake.dao.RootBean;
 import com.snake.service.B;
 import com.snake.service.CustomScanner;
 import com.snake.service.SnakeComponent;
+import org.springframework.beans.factory.support.GenericBeanDefinition;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.core.type.AnnotationMetadata;
@@ -24,6 +28,17 @@ public class TestMain {
 //		context.register(Dao1.class);
 		context.register(AppConfig.class);
 //		context.register(MyBeanDefinitionPostProcessor.class);
+		RootBeanDefinition rootBeanDefinition  = new RootBeanDefinition();
+		rootBeanDefinition.setBeanClass(RootBean.class);
+		rootBeanDefinition.getPropertyValues().addPropertyValue("type","movie");
+		rootBeanDefinition.getPropertyValues().addPropertyValue("name","image");
+		context.registerBeanDefinition("root",rootBeanDefinition);
+
+		GenericBeanDefinition childBeanDefinition  = new GenericBeanDefinition();
+		childBeanDefinition.setBeanClass(ChildBean.class);
+		childBeanDefinition.getPropertyValues().addPropertyValue("name","NNNNNN");
+		childBeanDefinition.setParentName("root");
+		context.registerBeanDefinition("child",childBeanDefinition);
 
 		context.refresh();
 //		for (String beanDefinitionName : context.getBeanDefinitionNames()) {

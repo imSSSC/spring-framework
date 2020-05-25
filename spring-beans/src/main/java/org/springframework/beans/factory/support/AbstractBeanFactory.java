@@ -288,7 +288,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			if (!typeCheckOnly) {
-				// 再次合并bean
+				// 删除bd，以防其他地方修改了bd，需要重写merge
 				markBeanAsCreated(beanName);
 			}
 
