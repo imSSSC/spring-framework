@@ -555,7 +555,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		synchronized (mbd.postProcessingLock) {
 			if (!mbd.postProcessed) {
 				try {
-					// 第三次调用后置处理器 合并BeanDefinition
+					// 第三次调用后置处理器 应用合并BeanDefinition，在实例化bean开始就先merge，这里是应用合并后的bd
 					// 通过后置处理器来 应用合并之后的bd
 					// 缓存了注入元素的信息
 					applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
