@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
-@Component
+//@Component
 //@DependsOn("service2")
 public class Service1 implements InitializingBean {
 

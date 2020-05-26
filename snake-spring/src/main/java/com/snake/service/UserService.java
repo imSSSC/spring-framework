@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
  * @author snake
  * @date 2020/4/6 21:44.
  */
-@Component
+//@Component
 public class UserService {
 //	public UserService() {
 //		System.out.println("---default");

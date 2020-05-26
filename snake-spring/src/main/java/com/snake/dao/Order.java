@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @author snake
  * @date 2020/5/24 15:56
  */
-@Component
+//@Component
 public class Order {
 //		public Order() {
 //		System.out.println("default");

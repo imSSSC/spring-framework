@@ -28,17 +28,17 @@ public class TestMain {
 //		context.register(Dao1.class);
 		context.register(AppConfig.class);
 //		context.register(MyBeanDefinitionPostProcessor.class);
-		RootBeanDefinition rootBeanDefinition  = new RootBeanDefinition();
-		rootBeanDefinition.setBeanClass(RootBean.class);
-		rootBeanDefinition.getPropertyValues().addPropertyValue("type","movie");
-		rootBeanDefinition.getPropertyValues().addPropertyValue("name","image");
-		context.registerBeanDefinition("root",rootBeanDefinition);
-
-		GenericBeanDefinition childBeanDefinition  = new GenericBeanDefinition();
-		childBeanDefinition.setBeanClass(ChildBean.class);
-		childBeanDefinition.getPropertyValues().addPropertyValue("name","NNNNNN");
-		childBeanDefinition.setParentName("root");
-		context.registerBeanDefinition("child",childBeanDefinition);
+//		RootBeanDefinition rootBeanDefinition  = new RootBeanDefinition();
+//		rootBeanDefinition.setBeanClass(RootBean.class);
+//		rootBeanDefinition.getPropertyValues().addPropertyValue("type","movie");
+//		rootBeanDefinition.getPropertyValues().addPropertyValue("name","image");
+//		context.registerBeanDefinition("root",rootBeanDefinition);
+//
+//		GenericBeanDefinition childBeanDefinition  = new GenericBeanDefinition();
+//		childBeanDefinition.setBeanClass(ChildBean.class);
+//		childBeanDefinition.getPropertyValues().addPropertyValue("name","NNNNNN");
+//		childBeanDefinition.setParentName("root");
+//		context.registerBeanDefinition("child",childBeanDefinition);
 
 		context.refresh();
 //		for (String beanDefinitionName : context.getBeanDefinitionNames()) {
