@@ -9,11 +9,11 @@ import javax.annotation.PostConstruct;
  * @author snake
  * @date 2020/4/6 21:44.
  */
-//@Component
+@Component
 public class UserService {
-//	public UserService() {
-//		System.out.println("---default");
-//	}
+	public UserService() {
+		System.out.println("---default");
+	}
 //
 //	public UserService(A a) {
 //		System.out.println(a);
@@ -39,11 +39,12 @@ public class UserService {
 //		System.out.println("-------");
 //	}
 //
-//	@Autowired
-	public void setA(A a) {
-		System.out.println(a);
-		System.out.println("-------");
-	}
+	@Autowired
+	X x;
+	@Autowired
+	A a;
+	@Autowired
+	B b;
 
 //	@Autowired
 //	I y;

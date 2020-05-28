@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
  * @author snake
  * @date 2020/4/1 17:55.
  */
-//@Component
-public class A {
-	@Autowired
-	B b;
+@Component
+public class A implements I{
+//	@Autowired
+//	B b;
 }

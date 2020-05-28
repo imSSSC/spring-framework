@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
  * @author snake
  * @date 2020/4/12 21:13
  */
-@Component
+//@Component
 public class Y implements I{
 }
