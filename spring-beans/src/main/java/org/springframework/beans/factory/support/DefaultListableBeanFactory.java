@@ -1121,7 +1121,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 			// 多个候选bd
 			if (matchingBeans.size() > 1) {
-				// 1.先 根据属性名从候选beans推断出匹配的name
+				// 1.先 根据属性名从候选 objects推断出匹配的name
 				autowiredBeanName = determineAutowireCandidate(matchingBeans, descriptor);
 				if (autowiredBeanName == null) {
 					if (isRequired(descriptor) || !indicatesMultipleBeans(type)) {
@@ -1134,12 +1134,12 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 						return null;
 					}
 				}
-				// 2. 根据名字 从根据类型找出来的map<beanName,Class>当中 获取匹配的object
+				// 2. 根据名字 从根据类型找出来的map<beanName,Class>当中 获取匹配的 object
 				instanceCandidate = matchingBeans.get(autowiredBeanName);
 			}
 			else {
 				// We have exactly one match.
-				// 其他数量的候选bean（无或者1个），直接取value，需要的object
+				// 其他数量的候选 object（无或者1个），直接取value，需要的object
 				Map.Entry<String, Object> entry = matchingBeans.entrySet().iterator().next();
 				autowiredBeanName = entry.getKey();
 				instanceCandidate = entry.getValue();
