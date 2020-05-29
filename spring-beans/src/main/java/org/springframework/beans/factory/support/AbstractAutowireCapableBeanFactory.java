@@ -1739,6 +1739,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object wrappedBean = bean;
 		if (mbd == null || !mbd.isSynthetic()) {
 			// 执行spring当中的内置处理器----xxxPostProcessor---@PostC
+			// 第七次后置处理器，执行bean实例化之前回调
 			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
 		}
 

@@ -34,17 +34,17 @@ public class UserService {
 //	@Autowired
 //	A a;
 
-//	public void setA(A a) {
+	public void setAAAAAA(A a) {
 //		this.a = a;
-//		System.out.println("-------");
-//	}
+		System.out.println("-------"+a);
+	}
 //
-	@Autowired
-	X x;
-	@Autowired
-	A a;
-	@Autowired
-	B b;
+//	@Autowired
+//	X x;
+//	@Autowired
+//	A a;
+//	@Autowired
+//	B b;
 
 //	@Autowired
 //	I y;
