@@ -126,6 +126,8 @@ public @interface EnableAspectJAutoProxy {
 	 * Indicate whether subclass-based (CGLIB) proxies are to be created as opposed
 	 * to standard Java interface-based proxies. The default is {@code false}.
 	 */
+	// true CGLib代理
+	// false JDK代理
 	boolean proxyTargetClass() default false;
 
 	/**
@@ -134,6 +136,8 @@ public @interface EnableAspectJAutoProxy {
 	 * Off by default, i.e. no guarantees that {@code AopContext} access will work.
 	 * @since 4.3.1
 	 */
+	// 在每次调用代理的时候会判断一下exposeProxy是否为true，
+	// 如果是的话，就通过ThreadLocal保存代理，可通过以下方法获取到代理。
 	boolean exposeProxy() default false;
 
 }
