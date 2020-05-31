@@ -85,6 +85,7 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 
 		if (aspectNames == null) {
 			synchronized (this) {
+				// 从缓存中获取，不必每次都去解析
 				aspectNames = this.aspectBeanNames;
 				if (aspectNames == null) {
 					List<Advisor> advisors = new ArrayList<>();
@@ -134,6 +135,7 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 							}
 						}
 					}
+					// aspectNames 放到缓存中
 					this.aspectBeanNames = aspectNames;
 					return advisors;
 				}

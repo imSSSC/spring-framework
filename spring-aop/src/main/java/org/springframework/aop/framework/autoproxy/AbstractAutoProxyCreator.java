@@ -463,7 +463,6 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		if (!proxyFactory.isProxyTargetClass()) {
 			if (shouldProxyTargetClass(beanClass, beanName)) {
 				// proxyTargetClass 是否对类进行代理，而不是对接口代理，设置为true时，使用CGLib代理
-
 				proxyFactory.setProxyTargetClass(true);
 			}
 			else {

@@ -155,6 +155,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 	}
 
 
+	// 链式调用，火炬传递，直到全部代理方法执行完，around需要在通知里面调用被代理的目标方法。
 	@Override
 	@Nullable
 	public Object proceed() throws Throwable {
