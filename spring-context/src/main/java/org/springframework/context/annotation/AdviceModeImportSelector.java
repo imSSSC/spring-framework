@@ -75,6 +75,7 @@ public abstract class AdviceModeImportSelector<A extends Annotation> implements 
 		}
 
 		AdviceMode adviceMode = attributes.getEnum(getAdviceModeAttributeName());
+		// 这里会调用子类的TxConfigurationSelector
 		String[] imports = selectImports(adviceMode);
 		if (imports == null) {
 			throw new IllegalArgumentException("Unknown AdviceMode: " + adviceMode);
