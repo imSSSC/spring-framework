@@ -334,6 +334,7 @@ class ConfigurationClassParser {
 		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
 		// Process any @ImportResource annotations
+		// 处理 @ImportResource
 		AnnotationAttributes importResource =
 				AnnotationConfigUtils.attributesFor(sourceClass.getMetadata(), ImportResource.class);
 		if (importResource != null) {
@@ -346,6 +347,7 @@ class ConfigurationClassParser {
 		}
 
 		// Process individual @Bean methods
+		// 处理 @Bean
 		Set<MethodMetadata> beanMethods = retrieveBeanMethodMetadata(sourceClass);
 		for (MethodMetadata methodMetadata : beanMethods) {
 			configClass.addBeanMethod(new BeanMethod(methodMetadata, configClass));
@@ -633,9 +635,9 @@ class ConfigurationClassParser {
 			this.importStack.push(configClass);
 			try {
 				// 处理@Import内部的注解和类
-				// Import normal类                     先configurationClasses 然后再注册loadBean
 				// @ImportSelect注解                   先configurationClasses 然后再注册loadBean
 				// ImportBeanDefinitionRegistrar接口   先放到importBeanDefinitionRegistrar 然后再注册
+				// Import normal类                     先configurationClasses 然后再注册loadBean
 				for (SourceClass candidate : importCandidates) {
 
 					// 1. 处理@ImportSelect
