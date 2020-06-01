@@ -234,8 +234,13 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 
 	@Override
 	protected Object doGetTransaction() {
+		// 管理connection对象，创建回滚点，按照回滚点，释放回滚点
 		DataSourceTransactionObject txObject = new DataSourceTransactionObject();
+
+		// DataSourceTransactionManager默认是允许嵌套事务
 		txObject.setSavepointAllowed(isNestedTransactionAllowed());
+
+		// obtainDataSource() 获取数据源对象，其实就是数据库连接块对象
 		ConnectionHolder conHolder =
 				(ConnectionHolder) TransactionSynchronizationManager.getResource(obtainDataSource());
 		txObject.setConnectionHolder(conHolder, false);
@@ -257,18 +262,22 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 		Connection con = null;
 
 		try {
+			// 如果没有数据库连接池
 			if (!txObject.hasConnectionHolder() ||
 					txObject.getConnectionHolder().isSynchronizedWithTransaction()) {
+				// 从连接池里面获取连接
 				Connection newCon = obtainDataSource().getConnection();
 				if (logger.isDebugEnabled()) {
 					logger.debug("Acquired Connection [" + newCon + "] for JDBC transaction");
 				}
+				// 把连接包装成ConnectionHolder,然后设置到事务对象中
 				txObject.setConnectionHolder(new ConnectionHolder(newCon), true);
 			}
 
 			txObject.getConnectionHolder().setSynchronizedWithTransaction(true);
 			con = txObject.getConnectionHolder().getConnection();
 
+			// 从数据库连接中获取隔离级别
 			Integer previousIsolationLevel = DataSourceUtils.prepareConnectionForTransaction(con, definition);
 			txObject.setPreviousIsolationLevel(previousIsolationLevel);
 
@@ -280,14 +289,18 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 				if (logger.isDebugEnabled()) {
 					logger.debug("Switching JDBC Connection [" + con + "] to manual commit");
 				}
+				// 关闭连接的自动提交，其实这步就是开启了事务
 				con.setAutoCommit(false);
 			}
 
+			// 设置只读事务就是告诉数据库，我这个事务内没有新增，修改，删除操作，不需要数据库锁
 			prepareTransactionalConnection(con, definition);
+			// 自己提交关闭了，就说明已经开启事务了，事务是活动的
 			txObject.getConnectionHolder().setTransactionActive(true);
 
 			int timeout = determineTimeout(definition);
 			if (timeout != TransactionDefinition.TIMEOUT_DEFAULT) {
+				// 如果是新创建的事务，则建立当前现线程和数据库连接的关系
 				txObject.getConnectionHolder().setTimeoutInSeconds(timeout);
 			}
 
