@@ -3,6 +3,7 @@ package com.snake;
 import com.snake.dao.ChildBean;
 import com.snake.dao.Dao1;
 import com.snake.dao.RootBean;
+import com.snake.service.ABConfig;
 import com.snake.service.B;
 import com.snake.service.CustomScanner;
 import com.snake.service.SnakeComponent;
@@ -26,7 +27,9 @@ public class TestMain {
 //		context.addBeanFactoryPostProcessor(new MyBeanDefinitionPostProcessor());
 //		context.addBeanFactoryPostProcessor(new MyBeanFactoryProcessor());
 //		context.register(Dao1.class);
-		context.register(AppConfig.class);
+		context.register(ABConfig.class);
+		context.refresh();
+
 //		context.register(MyBeanDefinitionPostProcessor.class);
 //		RootBeanDefinition rootBeanDefinition  = new RootBeanDefinition();
 //		rootBeanDefinition.setBeanClass(RootBean.class);
@@ -40,7 +43,6 @@ public class TestMain {
 //		childBeanDefinition.setParentName("root");
 //		context.registerBeanDefinition("child",childBeanDefinition);
 
-		context.refresh();
 //		for (String beanDefinitionName : context.getBeanDefinitionNames()) {
 //			System.out.println(beanDefinitionName);
 //		}

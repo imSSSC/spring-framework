@@ -147,7 +147,7 @@ class ConfigurationClassBeanDefinitionReader {
 		// xml
 		loadBeanDefinitionsFromImportedResources(configClass.getImportedResources());
 
-		// 注册registrar
+		// 注册registrar 调用ImportBeanDefinitionRegistrars类的 registerBeanDefinitions()
 		loadBeanDefinitionsFromRegistrars(configClass.getImportBeanDefinitionRegistrars());
 	}
 
@@ -359,6 +359,8 @@ class ConfigurationClassBeanDefinitionReader {
 	}
 
 	private void loadBeanDefinitionsFromRegistrars(Map<ImportBeanDefinitionRegistrar, AnnotationMetadata> registrars) {
+		// 根据策略，调用各个类的registerBeanDefinitions
+		// 比如 AutoProxyRegistrar，AspectJAutoProxyRegistrar，自定义的等等
 		registrars.forEach((registrar, metadata) ->
 				registrar.registerBeanDefinitions(metadata, this.registry));
 	}

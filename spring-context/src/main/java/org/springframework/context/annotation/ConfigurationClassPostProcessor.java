@@ -361,7 +361,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			 * configClasses当中主要包含的是importSelector
 			 * 因为ImportBeanDefinitionRegistrar在扫描出来的时候已经被添加到list当中去了
 			 */
-			// 扫描出来的bean对应bd添加到map中(出去普通类),比较重要
+			// 扫描出来的bean对应bd添加到map中(除去普通类),比较重要
 			this.reader.loadBeanDefinitions(configClasses);
 			alreadyParsed.addAll(configClasses);
 
