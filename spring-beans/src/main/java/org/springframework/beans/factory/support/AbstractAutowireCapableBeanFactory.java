@@ -555,9 +555,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		synchronized (mbd.postProcessingLock) {
 			if (!mbd.postProcessed) {
 				try {
-					// 第三次调用后置处理器 应用合并BeanDefinition，在实例化bean开始就先merge，这里是应用合并后的bd
+					// 应用合并BeanDefinition，在实例化bean开始就先merge，这里是应用合并后的bd
 					// 通过后置处理器来 应用合并之后的bd
-					// 缓存了注入元素的信息
+					// 第三次调用后置处理器 缓存了注入元素的信息
 					applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
 				}
 				catch (Throwable ex) {
@@ -1739,7 +1739,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object wrappedBean = bean;
 		if (mbd == null || !mbd.isSynthetic()) {
 			// 执行spring当中的内置处理器----xxxPostProcessor---@PostC
-			// 第七次后置处理器，执行bean实例化之前回调
+			// 第七次后置处理器，还有各种aware的方法 +  生命周期回调 执行@PostConstruct方法
 			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
 		}
 
@@ -1753,7 +1753,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					beanName, "Invocation of init method failed", ex);
 		}
 		if (mbd == null || !mbd.isSynthetic()) {
-			// 第八次后置处理器
+			// 第八次后置处理器 aop
 			wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
 		}
 
