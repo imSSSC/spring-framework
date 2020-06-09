@@ -1,5 +1,6 @@
 package com.snake.circular;
 
+import com.snake.service.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +10,14 @@ import org.springframework.stereotype.Component;
  */
 @Component("aa")
 public class AA {
+//	@Autowired
+//	BB bb;
+	public AA(BB bb){
+		System.out.println(bb);
+	}
+
 	@Autowired
-	BB bb;
+	public void dfasdf(CC cc){
+		System.out.println(cc);
+	}
 }

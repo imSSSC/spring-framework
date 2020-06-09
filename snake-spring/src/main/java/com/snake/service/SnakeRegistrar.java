@@ -14,6 +14,6 @@ public class SnakeRegistrar implements ImportBeanDefinitionRegistrar {
 		GenericBeanDefinition genericBeanDefinition = (GenericBeanDefinition) registry.getBeanDefinition("userService");
 		genericBeanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 		registry.registerBeanDefinition("userService",genericBeanDefinition);
-
+		System.out.println("--------registerBeanDefinitions");
 	}
 }

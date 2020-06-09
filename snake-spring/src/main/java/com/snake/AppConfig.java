@@ -1,5 +1,6 @@
 package com.snake;
 
+import com.snake.circular.AA;
 import com.snake.service.A;
 import com.snake.service.B;
 import com.snake.service.SnakeRegistrar;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.*;
 @Configuration
 @ComponentScan("com.snake.circular")
 //@ImportResource("classpath:spring.xml")// 用于读取xml
-//@Import(SnakeRegistrar.class)
+@Import(AA.class)
 public class AppConfig {
 
 //	@Bean

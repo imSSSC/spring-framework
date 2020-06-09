@@ -1,5 +1,6 @@
 package com.snake;
 
+import com.snake.circular.AA;
 import com.snake.dao.ChildBean;
 import com.snake.dao.Dao1;
 import com.snake.dao.RootBean;
@@ -29,6 +30,7 @@ public class TestMain {
 //		context.register(Dao1.class);
 		context.register(AppConfig.class);
 		context.refresh();
+		System.out.println(context.getBean(AA.class));
 
 //		context.register(MyBeanDefinitionPostProcessor.class);
 //		RootBeanDefinition rootBeanDefinition  = new RootBeanDefinition();

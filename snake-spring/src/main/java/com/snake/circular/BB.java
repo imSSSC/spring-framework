@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
  */
 @Component("bb")
 public class BB {
-	@Autowired
-	AA aa;
+	public BB(){
+		System.out.println("----------");
+	}
 }
